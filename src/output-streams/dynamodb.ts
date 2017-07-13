@@ -15,11 +15,11 @@ export interface DynamoDBMessage {
 export default class DynamoDB implements OutputStream {
   client: AwsDynamoDB.DocumentClient
 
-  constructor(config: AwsDynamoDB.Types.DocumentClient.DocumentClientOptions) {
+  constructor (config: AwsDynamoDB.Types.DocumentClient.DocumentClientOptions) {
     this.client = new AwsDynamoDB.DocumentClient(config)
   }
 
-  create() {
+  create () {
     return (msg: DynamoDBMessage) => {
       return Observable.of(msg)
         .flatMap((msg: DynamoDBMessage) => {
