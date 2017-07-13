@@ -1,0 +1,2 @@
+transformers:
+  mytopic: pass-through

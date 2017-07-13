@@ -1,0 +1,22 @@
+{
+  "extends": "standard",
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "parser": "typescript-eslint-parser",
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "modules": true
+    }
+  },
+  "plugins": [
+    "typescript"
+  ],
+  "rules": {
+    "no-undef": "off",
+    "no-unused-vars": "off",
+    "no-useless-constructor": "off"
+  }
+}
