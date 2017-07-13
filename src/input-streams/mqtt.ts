@@ -23,11 +23,9 @@ export class Mqtt implements InputStream {
     this.client = mqtt.connect(url)
     this.clientObs = Observable.create((observer: Observer<any>) => {
       this.client.on('connect', () => {
-        console.log('connect')
         observer.next(this.client)
       })
       this.client.on('error', (e) => {
-        console.log('err')
         observer.error(e)
       })
       this.client.on('close', (e) => {

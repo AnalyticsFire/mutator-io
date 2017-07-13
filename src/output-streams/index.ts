@@ -1,4 +1,4 @@
-import { Subject } from 'rxjs'
+import { ReplaySubject } from 'rxjs'
 import { ObservableInput } from 'rxjs/Observable'
 import * as DynamoDB from './dynamodb'
 

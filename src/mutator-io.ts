@@ -1,5 +1,5 @@
 import * as c from 'colors/safe'
-import { Observable, Subject } from 'rxjs'
+import { Observable, ReplaySubject } from 'rxjs'
 import { TransformStream } from './transform-streams'
 import { InputStream } from './input-streams'
 import { OutputStream } from './output-streams'
