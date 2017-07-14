@@ -8,6 +8,12 @@ The concept of a "pipe" in Mutator I/O is simply an inputStream piped into an ou
 ![Input output](../master/doc/assets/input-output.png?raw=true)
 
 ```javascript
+import {
+  MutatorIO,
+  inputStreams,
+  outputStreams
+} from 'mutator-io'
+
 const myPipe = {
   name: 'myPipeName',
   in: new inputStreams.Mqtt({
