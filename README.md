@@ -16,6 +16,8 @@ const myPipe = {
   }),
   out: new outputStreams.DynamoDB(),
 }
+
+const mutator = new MutatorIO([myPipe])
 ```
 
 ## Adding transformations
