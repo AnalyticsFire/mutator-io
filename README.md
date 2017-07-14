@@ -5,7 +5,7 @@ Mutator I/O is a tiny library to handle data transformations. It uses [RxJS](htt
 ## Pipes
 The concept of a "pipe" in Mutator I/O is simply an inputStream piped into an outputStream
 
-<!-- Place image -->
+![Input output](../master/doc/assets/input-output.png?raw=true)
 
 ```javascript
 const myPipe = {
@@ -23,7 +23,7 @@ const mutator = new MutatorIO([myPipe])
 ## Adding transformations
 Once you create a pipe, you have the possiblity to append data transformations to manipulate / aggregate / mutate the incoming data as you please (before it gets to the outputStream in the pipe)
 
-<!-- place image -->
+![Input transform output](../master/doc/assets/input-transform-output.png?raw=true)
 
 ```javascript
 
