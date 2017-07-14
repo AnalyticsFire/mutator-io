@@ -7,7 +7,7 @@ The concept of a "pipe" in Mutator I/O is simply an inputStream piped into an ou
 
 ![Input output](../master/doc/assets/input-output.png?raw=true)
 
-```javascript
+```typescript
 import {
   MutatorIO,
   inputStreams,
@@ -31,8 +31,7 @@ Once you create a pipe, you have the possiblity to append data transformations t
 
 ![Input transform output](../master/doc/assets/input-transform-output.png?raw=true)
 
-```javascript
-
+```typescript
 // Transform can be a simple function
 // or a function returning an Observable or a Promise
 mutator.transform('myPipeName', (msg) => msg + 'something')
