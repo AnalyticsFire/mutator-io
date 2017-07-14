@@ -52,7 +52,13 @@ export class MutatorIO {
               pipeName,
               inStream
                 .flatMap((msg) => transformer.call(this, msg))
-                .flatMap((msg) => outStream(msg))
+                .flatMap((msg) =>
+                  outStream(msg)
+                    .catch((err) => {
+                      logger.error(err)
+                      return inStream
+                    })
+                )
             ]
           })
 
@@ -61,15 +67,16 @@ export class MutatorIO {
 
     streams.map(([pipeName, stream]) => {
       logger.info(`${c.rainbow('•••')} Listening on pipe ${pipeName} ${c.rainbow('•••')}`)
-      stream.subscribe(
-        (msg) => {
-          if ((this.config.LOG_LEVEL || '').toUpperCase() === 'VERBOSE') {
-            logger.info(msg)
-          }
-        },
-        (err) => logger.error(err),
-        () => logger.info(`${c.rainbow('•••')} Stream closed ${c.rainbow('•••')}`)
-      )
+      stream
+        .subscribe(
+          (msg) => {
+            if ((this.config.LOG_LEVEL || '').toUpperCase() === 'VERBOSE') {
+              logger.info(msg)
+            }
+          },
+          (err) => logger.error(err),
+          () => logger.info(`${c.rainbow('•••')} ${pipeName} pipe closed ${c.rainbow('•••')}`)
+        )
     })
   }
 }

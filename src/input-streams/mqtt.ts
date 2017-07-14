@@ -37,7 +37,7 @@ export class Mqtt implements InputStream {
       this.client.on('reconnect', (e) => {
         console.log('reconnect')
       })
-      return () => this.client.end()
+      // return () => this.client.end()
     })
   }
 

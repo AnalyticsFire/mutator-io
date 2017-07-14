@@ -1,9 +1,8 @@
-import { ReplaySubject } from 'rxjs'
-import { ObservableInput } from 'rxjs/Observable'
+import { Observable } from 'rxjs'
 import * as DynamoDB from './dynamodb'
 
 export interface SubjectWrapper {
-  (msg: Object): ObservableInput<Object>
+  (msg: Object): Observable<Object>
 }
 
 export interface OutputStream {
