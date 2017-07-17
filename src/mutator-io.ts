@@ -57,6 +57,7 @@ export class MutatorIO {
     interface pipeResult extends Array<Object> {
       0: string,
       1: Observable<Object>
+      2: Subscription
     }
 
     const streams = Object.keys(this.transformers)
@@ -87,7 +88,7 @@ export class MutatorIO {
         return acc.concat(currentPipeResult)
       }, [])
 
-    streams.map(([pipeName, stream, subscription]) => {
+    streams.map(([pipeName, stream, subscription]: pipeResult) => {
       logger.info(`${c.rainbow('•••')} Listening on pipe ${pipeName} ${c.rainbow('•••')}`)
       subscription.disposable = stream
         .subscribe(
