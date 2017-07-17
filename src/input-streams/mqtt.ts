@@ -18,9 +18,9 @@ export default class Mqtt implements InputStream {
   topics: string[]
 
   constructor (config: Config) {
-    const { url, topics } = config
+    const { topics, ...opts } = config
     this.topics = topics
-    this.client = mqtt.connect(url)
+    this.client = mqtt.connect(opts)
     this.clientObs = Observable.create((observer: Observer<any>) => {
       this.client.on('connect', () => {
         observer.next(this.client)
