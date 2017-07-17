@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs'
-import { Mqtt } from './mqtt'
+import * as Mqtt from './mqtt'
 
 export interface InputStream {
   create(): Observable<Object>

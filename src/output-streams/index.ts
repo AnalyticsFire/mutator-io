@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs'
+import * as PassThrough from './pass-through'
 import * as DynamoDB from './dynamodb'
 
 export interface SubjectWrapper {
@@ -10,5 +11,6 @@ export interface OutputStream {
 }
 
 export const outputStreams = {
+  PassThrough,
   DynamoDB
 }

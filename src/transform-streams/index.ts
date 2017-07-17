@@ -1,4 +1,4 @@
-import { passThrough } from './pass-through'
+import { PassThrough } from './pass-through'
 import { Observable } from 'rxjs'
 
 export interface TransformStream {
@@ -6,5 +6,5 @@ export interface TransformStream {
 }
 
 export const transformStreams = {
-  passThrough
+  PassThrough
 }

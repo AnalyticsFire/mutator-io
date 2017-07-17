@@ -4,7 +4,6 @@
   "description": "Processor server to transform incoming data",
   "main": "dist/index.js",
   "scripts": {
-    "start": "npm run build && node dist/index.js",
     "build": "rm -rf dist; tsc -d",
     "watch": "rm -rf dist; tsc -w -d",
     "test": "echo \"Error: no test specified\"",

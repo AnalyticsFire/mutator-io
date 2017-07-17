@@ -3,6 +3,7 @@ import { Observable, ReplaySubject } from 'rxjs'
 import { TransformStream } from './transform-streams'
 import { InputStream } from './input-streams'
 import { OutputStream } from './output-streams'
+import * as shared from './shared'
 import Subscription from './subscription'
 import logger from './logger'
 
@@ -16,7 +17,7 @@ export interface Transformers {
   [name: string]: Array<TransformStream>
 }
 
-export type LogLevel = 'NONE' | 'VERBOSE'
+export type LogLevel = 'NONE' | 'DEBUG' | 'INFO'
 
 export interface Config {
   LOG_LEVEL?: LogLevel
@@ -25,7 +26,9 @@ export interface Config {
 export class MutatorIO {
   transformers: Transformers = {}
 
-  constructor (public pipes: Array<Pipe>, public config: Config = {}) { }
+  constructor (public pipes: Array<Pipe>, public config: Config = {}) {
+    logger.level = config.LOG_LEVEL.toLowerCase() || 'info'
+  }
 
   transform (pipeName: string, transform: TransformStream): Subscription {
     this.transformers[pipeName] = this.transformers[pipeName] || []
@@ -51,13 +54,14 @@ export class MutatorIO {
             return [
               pipeName,
               inStream
-                .flatMap((msg) => transformer.call(this, msg))
-                .flatMap((msg) =>
-                  outStream(msg)
-                    .catch((err) => {
-                      logger.error(err)
-                      return inStream
-                    })
+                .do((msg) => logger.debug(c.yellow('pre-transformation'), msg))
+                .flatMap((msg) => shared.wrapToObservable(transformer.call(this, msg)))
+                .do((msg) => logger.debug(c.yellow('post-transformation'), msg))
+                .flatMap((msg) => shared.wrapToObservable(outStream(msg))
+                  .catch((err) => {
+                    logger.error(err)
+                    return inStream
+                  })
                 )
             ]
           })
@@ -69,11 +73,7 @@ export class MutatorIO {
       logger.info(`${c.rainbow('•••')} Listening on pipe ${pipeName} ${c.rainbow('•••')}`)
       stream
         .subscribe(
-          (msg) => {
-            if ((this.config.LOG_LEVEL || '').toUpperCase() === 'VERBOSE') {
-              logger.info(msg)
-            }
-          },
+          (msg) => logger.info(msg),
           (err) => logger.error(err),
           () => logger.info(`${c.rainbow('•••')} ${pipeName} pipe closed ${c.rainbow('•••')}`)
         )

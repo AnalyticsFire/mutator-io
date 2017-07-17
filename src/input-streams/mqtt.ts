@@ -2,7 +2,7 @@ import * as mqtt from 'mqtt'
 import { Observable, Observer } from 'rxjs'
 import { InputStream } from './'
 
-export declare interface MqttMessage {
+export interface MqttMessage {
   topic: string,
   payload: Object
 }
@@ -12,7 +12,7 @@ export interface Config extends Object {
   topics: string[]
 }
 
-export class Mqtt implements InputStream {
+export default class Mqtt implements InputStream {
   client: mqtt.MqttClient
   clientObs: Observable<mqtt.MqttClient>
   topics: string[]
@@ -37,7 +37,6 @@ export class Mqtt implements InputStream {
       this.client.on('reconnect', (e) => {
         console.log('reconnect')
       })
-      // return () => this.client.end()
     })
   }
 
