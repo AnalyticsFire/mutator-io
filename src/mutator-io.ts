@@ -17,6 +17,10 @@ export interface Transformers {
   [name: string]: Array<TransformStream>
 }
 
+export interface Subscriptions {
+  [id: string]: Subscription
+}
+
 export type LogLevel = 'NONE' | 'DEBUG' | 'INFO'
 
 export interface Config {
@@ -25,15 +29,28 @@ export interface Config {
 
 export class MutatorIO {
   transformers: Transformers = {}
+  subscriptions: Subscriptions = {}
 
   constructor (public pipes: Array<Pipe>, public config: Config = {}) {
     logger.level = config.LOG_LEVEL.toLowerCase() || 'info'
   }
 
+  removeTransformer (pipeName: string, index: number): boolean {
+    if (!this.transformers[pipeName][index]) {
+      return false
+    }
+    this.transformers[pipeName].slice(index, 1)
+    return true
+  }
+
   transform (pipeName: string, transform: TransformStream): Subscription {
     this.transformers[pipeName] = this.transformers[pipeName] || []
-    this.transformers[pipeName].push(transform)
-    return new Subscription(pipeName, this)
+    const lastIndex = this.transformers[pipeName].push(transform) - 1
+
+    const subscription = new Subscription(this, pipeName, lastIndex)
+    transform.subscriptionId = subscription.id
+    this.subscriptions[subscription.id] = subscription
+    return subscription
   }
 
   start (): void {
@@ -62,16 +79,17 @@ export class MutatorIO {
                     logger.error(err)
                     return inStream
                   })
-                )
+                ),
+              this.subscriptions[transformer.subscriptionId]
             ]
           })
 
         return acc.concat(currentPipeResult)
       }, [])
 
-    streams.map(([pipeName, stream]) => {
+    streams.map(([pipeName, stream, subscription]) => {
       logger.info(`${c.rainbow('•••')} Listening on pipe ${pipeName} ${c.rainbow('•••')}`)
-      stream
+      subscription.disposable = stream
         .subscribe(
           (msg) => logger.info(msg),
           (err) => logger.error(err),
