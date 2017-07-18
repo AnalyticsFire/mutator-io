@@ -21,10 +21,14 @@ export interface Subscriptions {
   [id: string]: Subscription
 }
 
-export type LogLevel = 'NONE' | 'DEBUG' | 'INFO'
-
 export interface Config {
-  LOG_LEVEL?: LogLevel
+  LOG_LEVEL?: 'NONE' | 'DEBUG' | 'INFO'
+}
+
+interface pipeResult extends Array<Object> {
+  0: string,
+  1: Observable<Object>
+  2: Subscription
 }
 
 export class MutatorIO {
@@ -53,49 +57,47 @@ export class MutatorIO {
     return subscription
   }
 
-  start (): void {
-    interface pipeResult extends Array<Object> {
-      0: string,
-      1: Observable<Object>
-      2: Subscription
-    }
+  private composeStream (pipe: Pipe, transformer: TransformStream): pipeResult {
+    const inStream = pipe.in.create()
+    const outStream = pipe.out.create()
 
+    return [
+      pipe.name,
+      inStream
+        .do((msg) => logger.debug(c.yellow('pre-transformation'), msg))
+        .flatMap((msg) => shared.wrapToObservable(transformer.call(this, msg)))
+        .do((msg) => logger.debug(c.yellow('post-transformation'), msg))
+        .flatMap((msg) => shared.wrapToObservable(outStream(msg))
+          .catch((err) => {
+            logger.error(err)
+            return inStream
+          })
+        ),
+      this.subscriptions[transformer.subscriptionId]
+    ]
+  }
+
+  private subscribeToStream ([pipeName, stream, subscription]: pipeResult) {
+    logger.info(`${c.rainbow('•••')} Listening on pipe ${pipeName} ${c.rainbow('•••')}`)
+    subscription.disposable = stream
+      .subscribe(
+        (msg) => logger.info(msg),
+        (err) => logger.error(err),
+        () => logger.info(`${c.rainbow('•••')} ${pipeName} pipe closed ${c.rainbow('•••')}`)
+      )
+  }
+
+  start (): void {
     const streams = Object.keys(this.transformers)
       .reduce((acc, pipeName): Array<pipeResult> => {
         const currentPipe = this.pipes.find((pipe) => pipe.name === pipeName)
 
         const currentPipeResult = this.transformers[pipeName]
-          .map((transformer): pipeResult => {
-            const inStream = currentPipe.in.create()
-            const outStream = currentPipe.out.create()
-
-            return [
-              pipeName,
-              inStream
-                .do((msg) => logger.debug(c.yellow('pre-transformation'), msg))
-                .flatMap((msg) => shared.wrapToObservable(transformer.call(this, msg)))
-                .do((msg) => logger.debug(c.yellow('post-transformation'), msg))
-                .flatMap((msg) => shared.wrapToObservable(outStream(msg))
-                  .catch((err) => {
-                    logger.error(err)
-                    return inStream
-                  })
-                ),
-              this.subscriptions[transformer.subscriptionId]
-            ]
-          })
+          .map((transformer) => this.composeStream(currentPipe, transformer))
 
         return acc.concat(currentPipeResult)
       }, [])
 
-    streams.map(([pipeName, stream, subscription]: pipeResult) => {
-      logger.info(`${c.rainbow('•••')} Listening on pipe ${pipeName} ${c.rainbow('•••')}`)
-      subscription.disposable = stream
-        .subscribe(
-          (msg) => logger.info(msg),
-          (err) => logger.error(err),
-          () => logger.info(`${c.rainbow('•••')} ${pipeName} pipe closed ${c.rainbow('•••')}`)
-        )
-    })
+    streams.map(this.subscribeToStream)
   }
 }
