@@ -21,8 +21,15 @@ export interface Subscriptions {
   [id: string]: Subscription
 }
 
+export enum LogLevels {
+  'NONE',
+  'DEBUG',
+  'INFO'
+}
+
 export interface Config {
-  LOG_LEVEL?: 'NONE' | 'DEBUG' | 'INFO'
+  COLORS?: boolean
+  LOG_LEVEL?: LogLevels
 }
 
 interface pipeResult extends Array<Object> {
@@ -35,8 +42,18 @@ export class MutatorIO {
   transformers: Transformers = {}
   subscriptions: Subscriptions = {}
 
+  static defaultConfig: Config = {
+    LOG_LEVEL: LogLevels.INFO,
+    COLORS: true
+  }
+
   constructor (public pipes: Array<Pipe>, public config: Config = {}) {
-    logger.level = config.LOG_LEVEL.toLowerCase() || 'info'
+    this.config = { ...MutatorIO.defaultConfig, ...config }
+    logger.level = this.config.LOG_LEVEL.toString().toLowerCase()
+    if (!this.config.COLORS) {
+      c.enabled = false
+      logger.transports.console.colorize = false
+    }
   }
 
   removeTransformer (pipeName: string, index: number): boolean {
