@@ -24,6 +24,7 @@ const myPipe = {
 }
 
 const mutator = new MutatorIO([myPipe])
+mutator.start()
 ```
 
 ## Adding transformations
