@@ -5,8 +5,12 @@
     "outDir": "dist",
     "sourceMap": true
   },
-  "files": [
-    "./node_modules/@types/node/index.d.ts"
+  "global": {
+    "baseSubscriber": true
+  },
+  "types": [
+    "node",
+    "mocha"
   ],
   "include": [
     "src/**/*.ts"

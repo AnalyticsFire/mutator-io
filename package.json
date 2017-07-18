@@ -6,8 +6,10 @@
   "scripts": {
     "build": "rm -rf dist; tsc -d",
     "watch": "rm -rf dist; tsc -w -d",
-    "test": "echo \"Error: no test specified\"",
-    "lint": "eslint src --fix --ext ts"
+    "test": "mocha --recursive -r test/helper.ts --compilers ts:espower-typescript/guess test",
+    "test:watch": "mocha --watch --watch-extensions ts --recursive -r test/helper.ts --compilers ts:espower-typescript/guess test",
+    "test:debug": "iron-node ./node_modules/mocha/bin/_mocha --recursive -r test/helper.ts --compilers ts:espower-typescript/guess test",
+    "lint": "eslint src test --fix --ext ts"
   },
   "repository": {
     "type": "git",
@@ -32,6 +34,7 @@
     "winston": "^2.3.1"
   },
   "devDependencies": {
+    "@types/mocha": "^2.2.41",
     "@types/node": "^8.0.0",
     "eslint": "^4.0.0",
     "eslint-config-standard": "^10.2.1",
@@ -40,7 +43,10 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "eslint-plugin-typescript": "^0.3.0",
+    "espower-typescript": "^8.0.2",
     "iron-node": "^3.0.19",
+    "mocha": "^3.4.2",
+    "power-assert": "^1.4.4",
     "pre-commit": "^1.2.2",
     "typescript": "^2.4.1",
     "typescript-eslint-parser": "^4.0.0"
