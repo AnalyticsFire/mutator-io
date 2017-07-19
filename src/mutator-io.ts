@@ -94,7 +94,7 @@ export class MutatorIO {
     ]
   }
 
-  private subscribeToStream ([pipeName, stream, subscription]: pipeResult) {
+  private subscribeToStream ([ pipeName, stream, subscription ]: pipeResult) {
     logger.info(`${c.rainbow('•••')} Listening on pipe ${pipeName} ${c.rainbow('•••')}`)
     subscription.disposable = stream
       .subscribe(

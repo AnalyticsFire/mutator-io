@@ -5,10 +5,10 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "rm -rf dist; tsc -d",
-    "watch": "rm -rf dist; tsc -w -d",
-    "test": "mocha --recursive -r test/helper.ts --compilers ts:espower-typescript/guess test",
-    "test:watch": "mocha --watch --watch-extensions ts --recursive -r test/helper.ts --compilers ts:espower-typescript/guess test",
-    "test:debug": "iron-node ./node_modules/mocha/bin/_mocha --recursive -r test/helper.ts --compilers ts:espower-typescript/guess test",
+    "build:watch": "rm -rf dist; tsc -w -d",
+    "test": "mocha --recursive --compilers ts:espower-typescript/guess test/helper.ts test",
+    "test:watch": "mocha --watch --watch-extensions ts --recursive --compilers ts:espower-typescript/guess test/helper.ts test",
+    "test:debug": "iron-node ./node_modules/mocha/bin/_mocha --recursive --compilers ts:espower-typescript/guess test/helper.ts test",
     "lint": "eslint src test --fix --ext ts"
   },
   "repository": {
@@ -26,7 +26,7 @@
     "test"
   ],
   "dependencies": {
-    "aws-sdk": "^2.82.0",
+    "aws-sdk": "^2.86.0",
     "colors": "^1.1.2",
     "mqtt": "^2.9.1",
     "rxjs": "^5.4.2",
@@ -35,11 +35,11 @@
   },
   "devDependencies": {
     "@types/mocha": "^2.2.41",
-    "@types/node": "^8.0.0",
-    "eslint": "^4.0.0",
+    "@types/node": "^8.0.14",
+    "eslint": "^4.2.0",
     "eslint-config-standard": "^10.2.1",
-    "eslint-plugin-import": "^2.3.0",
-    "eslint-plugin-node": "^5.0.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.1.1",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "eslint-plugin-typescript": "^0.3.0",
@@ -48,6 +48,8 @@
     "mocha": "^3.4.2",
     "power-assert": "^1.4.4",
     "pre-commit": "^1.2.2",
+    "proxyquire": "^1.8.0",
+    "sinon": "^2.3.8",
     "typescript": "^2.4.1",
     "typescript-eslint-parser": "^4.0.0"
   }

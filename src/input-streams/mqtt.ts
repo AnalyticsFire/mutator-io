@@ -1,4 +1,5 @@
 import * as mqtt from 'mqtt'
+import { IClientOptions } from 'mqtt/types'
 import { Observable, Observer } from 'rxjs'
 import { InputStream } from './'
 
@@ -7,8 +8,7 @@ export interface MqttMessage {
   payload: Object
 }
 
-export interface Config extends Object {
-  url: string,
+export interface Config extends IClientOptions {
   topics: string[]
 }
 
