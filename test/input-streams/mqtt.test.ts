@@ -125,7 +125,7 @@ describe('Input - Mqtt', () => {
       const errorMsg = 'my subscribe error'
       mqttInstance
         .create()
-        .subscribe(() => { }, (err) => {
+        .subscribe(() => {}, (err) => {
           assert(err === errorMsg)
           done()
         })

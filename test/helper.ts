@@ -19,9 +19,7 @@ global.baseSubscriber = (expected, done) => [
   (e) => done(new Error(e))
 ]
 
-beforeEach(() => {
-  global.sandbox = sinon.sandbox.create()
-})
+global.sandbox = sinon.sandbox.create()
 
 afterEach(() => {
   global.sandbox.restore()

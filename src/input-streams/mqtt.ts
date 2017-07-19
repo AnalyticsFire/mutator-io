@@ -28,6 +28,7 @@ export default class Mqtt implements InputStream {
       this.client.on('error', (e) => {
         observer.error(e)
       })
+      // TODO: Fix these cases and handle them in test coverage
       this.client.on('close', (e) => {
         console.log('close')
       })
