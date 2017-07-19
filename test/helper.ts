@@ -13,8 +13,12 @@ declare global {
 
 global.baseSubscriber = (expected, done) => [
   (msg) => {
-    assert.deepEqual(msg, expected)
-    done()
+    try {
+      assert.deepEqual(msg, expected)
+      done()
+    } catch (e) {
+      done(e)
+    }
   },
   (e) => done(new Error(e))
 ]

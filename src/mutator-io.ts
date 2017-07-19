@@ -3,8 +3,8 @@ import { Observable, ReplaySubject } from 'rxjs'
 import { TransformStream } from './transform-streams'
 import { InputStream } from './input-streams'
 import { OutputStream } from './output-streams'
+import { Subscription } from './subscription'
 import * as shared from './shared'
-import Subscription from './subscription'
 import logger from './logger'
 
 export interface Pipe {
@@ -39,8 +39,8 @@ interface pipeResult extends Array<Object> {
 }
 
 export class MutatorIO {
-  transformers: Transformers = {}
-  subscriptions: Subscriptions = {}
+  public transformers: Transformers = {}
+  public subscriptions: Subscriptions = {}
 
   static defaultConfig: Config = {
     LOG_LEVEL: LogLevels.INFO,
@@ -96,6 +96,7 @@ export class MutatorIO {
 
   private subscribeToStream ([ pipeName, stream, subscription ]: pipeResult) {
     logger.info(`${c.rainbow('•••')} Listening on pipe ${pipeName} ${c.rainbow('•••')}`)
+    subscription.stream = stream
     subscription.disposable = stream
       .subscribe(
         (msg) => logger.info(msg),

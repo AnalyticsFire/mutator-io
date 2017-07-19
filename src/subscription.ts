@@ -1,11 +1,12 @@
 import * as c from 'colors/safe'
-import { Subscription as RxjsSubscription } from 'rxjs'
+import { Observable, Subscription as RxjsSubscription } from 'rxjs'
 import { MutatorIO } from './mutator-io'
 import * as uuidv1 from 'uuid/v1'
 import logger from './logger'
 
-export default class Subscription {
+export class Subscription {
   id: string
+  stream: Observable<any>
   disposable: RxjsSubscription
 
   constructor (
