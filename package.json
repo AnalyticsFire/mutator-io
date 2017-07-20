@@ -1,6 +1,6 @@
 {
   "name": "mutator-io",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A tiny library to handle (big) data transformations",
   "main": "dist/index.js",
   "scripts": {
@@ -30,6 +30,9 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "aws-sdk": "^2.86.0",
     "colors": "^1.1.2",

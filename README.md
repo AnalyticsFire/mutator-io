@@ -1,6 +1,16 @@
 # Mutator I/O
 
+[![Build Status](https://travis-ci.org/AnalyticsFire/mutator-io.svg?branch=master)](https://travis-ci.org/AnalyticsFire/mutator-io)
+[![Standard JS](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![TypeScript](https://badges.frapsoft.com/typescript/awesome/typescript.png?v=101)](https://github.com/ellerbrock/typescript-badges/)
+
 Mutator I/O is a tiny library to handle data [transformations](doc/transform-streams/transform-streams.md). It uses [RxJS](https://github.com/Reactive-Extensions/RxJS) to compose streams of data from a source (inputStream) to a destination (outputStream)
+
+## Installation
+
+```bash
+npm i mutator-io
+```
 
 ## Pipes
 The concept of a "pipe" in Mutator I/O is simply an [input stream](doc/input-streams/input-streams.md) piped into an [output stream](doc/output-streams/output-streams.md)
