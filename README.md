@@ -64,17 +64,18 @@ mutator.transform('myPipeName', (msg): outputStreams.Dynamo.DynamoDBMessage => {
 
 ## Contributing
 
-Use `npm link` 
+Use `npm link`
 
 ### NPM Scripts
 
 ```javascript
-"build"       // Builds the files using tsc
-"build:watch" // Builds the files using tsc with -w argument recompile on change
-"lint"        // Lints and autofix problems using eslint with Typescript parser
-"test"        // Launches mocha tests
-"test:watch"  // Launches mocha tests with watch optin to retrigger on change
-"test:debug"  // Launches iron-node with source maps support to debug tests
+"build"         // Builds the files using tsc
+"build:watch"    // Builds the files using tsc with -w argument recompile on change
+"lint"           // Lints and autofix problems using eslint with Typescript parser
+"test"           // Launches mocha tests
+"test:watch"     // Launches mocha tests with watch optin to retrigger on change
+"test:debug"     // Launches iron-node with source maps support to debug tests
+"publish-please" // Uses publish-please to release a new npm version
 ```
 
 ### TODO
