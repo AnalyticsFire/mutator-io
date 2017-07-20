@@ -1,5 +1,5 @@
 {
-  "name": "mutator-io",
+  "name": "@analyticsfire/mutator-io",
   "version": "0.1.0",
   "description": "A tiny library to handle (big) data transformations",
   "main": "dist/index.js",
@@ -55,5 +55,17 @@
     "sinon": "^2.3.8",
     "typescript": "^2.4.1",
     "typescript-eslint-parser": "^4.0.0"
-  }
+  },
+  "directories": {
+    "doc": "doc",
+    "test": "test"
+  },
+  "keywords": [
+    "typescript",
+    "rxjs",
+    "transform",
+    "data",
+    "big",
+    "streams"
+  ]
 }
