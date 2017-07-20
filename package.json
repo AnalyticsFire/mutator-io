@@ -1,5 +1,5 @@
 {
-  "name": "@analyticsfire/mutator-io",
+  "name": "mutator-io",
   "version": "0.1.0",
   "description": "A tiny library to handle (big) data transformations",
   "main": "dist/index.js",
