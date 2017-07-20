@@ -1,9 +1,9 @@
 # Mutator I/O
 
-Mutator I/O is a tiny library to handle data transformations. It uses [RxJS](https://github.com/Reactive-Extensions/RxJS) to compose streams of data from a source (inputStream) to a destination (outputStream)
+Mutator I/O is a tiny library to handle data [transformations](doc/transform-streams/transform-streams.md). It uses [RxJS](https://github.com/Reactive-Extensions/RxJS) to compose streams of data from a source (inputStream) to a destination (outputStream)
 
 ## Pipes
-The concept of a "pipe" in Mutator I/O is simply an inputStream piped into an outputStream
+The concept of a "pipe" in Mutator I/O is simply an [input stream](doc/input-streams/input-streams.md) piped into an [output stream](doc/output-streams/output-streams.md)
 
 ![Input output](../master/doc/assets/input-output.png?raw=true)
 
@@ -27,12 +27,14 @@ const mutator = new MutatorIO([myPipe])
 mutator.start()
 ```
 
-## Default Input/Output streams
+## Default Input/Transform/Output streams
   - ### Input
-    - MQTT
+    - [MQTT](doc/input-streams/mqtt.md)
+  - ### Transform
+    - [Pass-through](doc/transform-streams/pass-through.md)
   - ### Output
-    - DynamoDB
-    - Pass-through
+    - [DynamoDB](doc/output-streams/dynamodb.md)
+    - [Pass-through](doc/output-streams/pass-through.md)
 
 ## Adding transformations
 Once you create a pipe, you have the possiblity to append data transformations to manipulate / aggregate / mutate the incoming data as you please (before it gets to the outputStream in the pipe)
