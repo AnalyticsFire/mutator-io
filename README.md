@@ -62,6 +62,21 @@ mutator.transform('myPipeName', (msg): outputStreams.Dynamo.DynamoDBMessage => {
 })
 ```
 
+## Contributing
+
+Use `npm link` 
+
+### NPM Scripts
+
+```javascript
+"build"       // Builds the files using tsc
+"build:watch" // Builds the files using tsc with -w argument recompile on change
+"lint"        // Lints and autofix problems using eslint with Typescript parser
+"test"        // Launches mocha tests
+"test:watch"  // Launches mocha tests with watch optin to retrigger on change
+"test:debug"  // Launches iron-node with source maps support to debug tests
+```
+
 ### TODO
   - ~~Add documentation on the existing pre-defined streams (Mqtt, passThrough, DynamoDB)~~
   - ~~Add documentation on how to construct an inputStream~~

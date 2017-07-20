@@ -1,7 +1,7 @@
 {
   "name": "mutator-io",
   "version": "0.1.0",
-  "description": "Processor server to transform incoming data",
+  "description": "A tiny library to handle (big) data transformations",
   "main": "dist/index.js",
   "scripts": {
     "build": "rm -rf dist; tsc -d",
@@ -15,8 +15,8 @@
     "type": "git",
     "url": "git+https://github.com/AnalyticsFire/mutator-io.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Analyticsfire",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/AnalyticsFire/mutator-io/issues"
   },
