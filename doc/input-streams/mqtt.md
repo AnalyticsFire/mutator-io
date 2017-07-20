@@ -15,7 +15,7 @@ interface Config extends IClientOptions {
 This kind of security is supported just like it is in MQTT.js (though there aren't many examples around)
 
 ```typescript
-const options = {
+const myInputStream = new inputStreams.Mqtt.default({
   protocol: 'mqtts',
   host: 'my-endpoint.iot.eu-central-1.amazonaws.com',
   port: 8883,
@@ -23,10 +23,7 @@ const options = {
   cert: fs.readFileSync('./certs/mqtt.pem'),
   ca: fs.readFileSync('./certs/mqtt_ca.pem'),
   requestCert: true,
-  rejectUnauthorized: true
-}
-
-const myInputStream = new inputStreams.Mqtt.default(Object.assign({}, options, {
+  rejectUnauthorized: true,
   topics: ['something/+/+/+/status/+/+/+']
-}))
+})
 ```
