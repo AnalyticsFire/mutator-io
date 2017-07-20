@@ -1,4 +1,5 @@
 import * as assert from 'assert'
+import * as shared from '../../src/shared'
 import PassThrough from '../../src/output-streams/pass-through'
 
 describe('Output - PassThrough', () => {
@@ -10,6 +11,8 @@ describe('Output - PassThrough', () => {
   })
 
   it('passes the value provided in the input to an output', (done) => {
-    outStreamInput(exampleObj).subscribe(...global.baseSubscriber(exampleObj, done))
+    shared.wrapToObservable(
+      outStreamInput(exampleObj)
+    ).subscribe(...global.baseSubscriber(exampleObj, done))
   })
 })

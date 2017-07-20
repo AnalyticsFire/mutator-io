@@ -2,12 +2,12 @@ import { Observable } from 'rxjs'
 import * as PassThrough from './pass-through'
 import * as DynamoDB from './dynamodb'
 
-export interface SubjectWrapper {
+export interface OutputStreamCreateMethod {
   (msg: Object): Observable<Object>
 }
 
 export interface OutputStream {
-  create(): SubjectWrapper
+  create(): OutputStreamCreateMethod
 }
 
 export const outputStreams = {

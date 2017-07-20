@@ -6,10 +6,10 @@
   "scripts": {
     "build": "rm -rf dist; tsc -d",
     "build:watch": "rm -rf dist; tsc -w -d",
+    "lint": "eslint src test --fix --ext ts",
     "test": "mocha --recursive --compilers ts:espower-typescript/guess test/helper.ts test",
     "test:watch": "mocha --watch --watch-extensions ts --recursive --compilers ts:espower-typescript/guess test/helper.ts test",
-    "test:debug": "iron-node ./node_modules/mocha/bin/_mocha --recursive --compilers ts:espower-typescript/guess test/helper.ts test",
-    "lint": "eslint src test --fix --ext ts"
+    "test:debug": "iron-node ./node_modules/mocha/bin/_mocha --recursive --compilers ts:espower-typescript/guess test/helper.ts test"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,9 @@
   "pre-commit": [
     "lint",
     "test"
+  ],
+  "files": [
+    "dist"
   ],
   "dependencies": {
     "aws-sdk": "^2.86.0",

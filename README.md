@@ -27,6 +27,13 @@ const mutator = new MutatorIO([myPipe])
 mutator.start()
 ```
 
+## Default Input/Output streams
+  - ### Input
+    - MQTT
+  - ### Output
+    - DynamoDB
+    - Pass-through
+
 ## Adding transformations
 Once you create a pipe, you have the possiblity to append data transformations to manipulate / aggregate / mutate the incoming data as you please (before it gets to the outputStream in the pipe)
 
@@ -54,9 +61,9 @@ mutator.transform('myPipeName', (msg): outputStreams.Dynamo.DynamoDBMessage => {
 ```
 
 ### TODO
-  - Add documentation on the existing pre-defined streams (Mqtt, passThrough, DynamoDB)
-  - Add documentation on how to construct an inputStream
-  - Add documentation on how to construct an outputStream
+  - ~~Add documentation on the existing pre-defined streams (Mqtt, passThrough, DynamoDB)~~
+  - ~~Add documentation on how to construct an inputStream~~
+  - ~~Add documentation on how to construct an outputStream~~
   - Create further documentation leveraging typescript
   - Add better error handling
-  - Add tests coverage
+  - ~~Add tests coverage~~

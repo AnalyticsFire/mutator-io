@@ -54,23 +54,25 @@ describe('Output - DynamoDB', () => {
       callback(null, {})
     })
 
-    it('outputs an error if the aws call failed', (done) => {
-      const errorMsg = 'put error message'
+    describe('Error handling', () => {
+      it('outputs an error if the aws call failed', (done) => {
+        const errorMsg = 'put error message'
 
-      outStreamInput(examplePutObj)
-        .subscribe(() => { }, (err) => {
-          assert(err === errorMsg)
-          done()
-        })
+        outStreamInput(examplePutObj)
+          .subscribe(() => { }, (err) => {
+            assert(err === errorMsg)
+            done()
+          })
 
-      assert(putSpy.called)
-      assert(putSpy.getCalls().length === 1)
-      assert.equal(putSpy.getCall(0).args[0], exampleParams)
+        assert(putSpy.called)
+        assert(putSpy.getCalls().length === 1)
+        assert.equal(putSpy.getCall(0).args[0], exampleParams)
 
-      const callback = putSpy.getCall(0).args[1]
-      assert(callback instanceof Function)
+        const callback = putSpy.getCall(0).args[1]
+        assert(callback instanceof Function)
 
-      callback(errorMsg, {})
+        callback(errorMsg, {})
+      })
     })
   })
 
@@ -98,23 +100,25 @@ describe('Output - DynamoDB', () => {
       callback(null, {})
     })
 
-    it('outputs an error if the aws call failed', (done) => {
-      const errorMsg = 'put error message'
+    describe('Error handling', () => {
+      it('outputs an error if the aws call failed', (done) => {
+        const errorMsg = 'put error message'
 
-      outStreamInput(exampleDeleteObj)
-        .subscribe(() => { }, (err) => {
-          assert(err === errorMsg)
-          done()
-        })
+        outStreamInput(exampleDeleteObj)
+          .subscribe(() => { }, (err) => {
+            assert(err === errorMsg)
+            done()
+          })
 
-      assert(deleteSpy.called)
-      assert(deleteSpy.getCalls().length === 1)
-      assert.equal(deleteSpy.getCall(0).args[0], exampleParams)
+        assert(deleteSpy.called)
+        assert(deleteSpy.getCalls().length === 1)
+        assert.equal(deleteSpy.getCall(0).args[0], exampleParams)
 
-      const callback = deleteSpy.getCall(0).args[1]
-      assert(callback instanceof Function)
+        const callback = deleteSpy.getCall(0).args[1]
+        assert(callback instanceof Function)
 
-      callback(errorMsg, {})
+        callback(errorMsg, {})
+      })
     })
   })
 })
