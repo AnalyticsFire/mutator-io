@@ -1,4 +1,4 @@
-export { MutatorIO, Pipe, Config } from './mutator-io'
+export { MutatorIO, Pipe, Config, LogLevels } from './mutator-io'
 export { MutatorIO as default } from './mutator-io'
 export { InputStream, inputStreams } from './input-streams'
 export { OutputStream, outputStreams } from './output-streams'
