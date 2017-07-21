@@ -21,15 +21,9 @@ export interface Subscriptions {
   [id: string]: Subscription
 }
 
-export enum LogLevels {
-  'NONE',
-  'DEBUG',
-  'INFO'
-}
-
 export interface Config {
   COLORS?: boolean
-  LOG_LEVEL?: LogLevels
+  LOG_LEVEL?: 'NONE' | 'INFO' | 'DEBUG'
 }
 
 interface pipeResult extends Array<Object> {
@@ -43,7 +37,7 @@ export class MutatorIO {
   public subscriptions: Subscriptions = {}
 
   static defaultConfig: Config = {
-    LOG_LEVEL: LogLevels.INFO,
+    LOG_LEVEL: 'INFO',
     COLORS: true
   }
 
@@ -106,15 +100,20 @@ export class MutatorIO {
   }
 
   start (): void {
-    const streams = Object.keys(this.transformers)
-      .reduce((acc, pipeName): Array<pipeResult> => {
-        const currentPipe = this.pipes.find((pipe) => pipe.name === pipeName)
+    const transformerKeys = Object.keys(this.transformers)
 
-        const currentPipeResult = this.transformers[pipeName]
-          .map((transformer) => this.composeStream(currentPipe, transformer))
+    if (!transformerKeys.length) {
+      return logger.info(`${c.rainbow('•••')} There are no transformers set ${c.rainbow('•••')}`)
+    }
 
-        return acc.concat(currentPipeResult)
-      }, [])
+    const streams = transformerKeys.reduce((acc, pipeName): Array<pipeResult> => {
+      const currentPipe = this.pipes.find((pipe) => pipe.name === pipeName)
+
+      const currentPipeResult = this.transformers[pipeName]
+        .map((transformer) => this.composeStream(currentPipe, transformer))
+
+      return acc.concat(currentPipeResult)
+    }, [])
 
     streams.map(this.subscribeToStream)
   }

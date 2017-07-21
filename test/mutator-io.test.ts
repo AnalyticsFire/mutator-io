@@ -38,7 +38,9 @@ describe('MutatorIO', () => {
         in: mockInputStream,
         out: mockOutputStream
       }
-    ] as Array<Pipe>)
+    ] as Array<Pipe>, {
+      LOG_LEVEL: 'NONE'
+    })
   })
 
   it('adds a transformer to the list and returns a subscription item', () => {
@@ -56,6 +58,12 @@ describe('MutatorIO', () => {
 
     assert(loggerSpy.getCalls().length === 2)
     assert(loggerSpy.lastCall.args[0] === 'input add transform add output add')
+  })
+
+  it('displays an error if we try to start it without transformers', () => {
+    mutatorIO.start()
+    assert(loggerSpy.getCalls().length === 1)
+    assert(loggerSpy.lastCall.args[0].indexOf('There are no transformers set') > -1)
   })
 
   describe('Subscription', () => {
