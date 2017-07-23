@@ -1,7 +1,7 @@
 import * as assert from 'assert'
 import * as proxyquire from 'proxyquire'
 import * as sinon from 'sinon'
-import { DynamoDBMessage, Operations } from '../../src/output-streams/dynamodb'
+import * as outputStreams from '../../src/output-streams'
 
 describe('Output - DynamoDB', () => {
   let outStreamInput
@@ -23,11 +23,11 @@ describe('Output - DynamoDB', () => {
       DocumentClient: DocumentClientMock
     }
 
-    const DynamoDB = proxyquire('../../src/output-streams/dynamodb', {
+    const DynamoDBMock = proxyquire('../../src/output-streams/dynamodb', {
       'aws-sdk/clients/dynamodb': AwsDynamoDBMock
-    }).default
+    })
 
-    outStreamInput = (new DynamoDB()).create()
+    outStreamInput = (new DynamoDBMock()).create()
   })
 
   describe('PUT operation', () => {
@@ -36,11 +36,11 @@ describe('Output - DynamoDB', () => {
       obj: 'object'
     }
     const examplePutObj = {
-      operation: Operations.PUT,
+      operation: outputStreams.DynamoDB.Operations.PUT,
       params: exampleParams
-    } as DynamoDBMessage
+    } as outputStreams.DynamoDB.Message
 
-    it('performs a put call on aws if we pass a PUT DynamoDBMessage', (done) => {
+    it('performs a put call on aws if we pass a PUT DBMessage', (done) => {
       outStreamInput(examplePutObj)
         .subscribe(...global.baseSubscriber(examplePutObj, done))
 
@@ -82,11 +82,11 @@ describe('Output - DynamoDB', () => {
       obj: 'object'
     }
     const exampleDeleteObj = {
-      operation: Operations.DELETE,
+      operation: outputStreams.DynamoDB.Operations.DELETE,
       params: exampleParams
-    } as DynamoDBMessage
+    } as outputStreams.DynamoDB.Message
 
-    it('performs a delete call on aws if we pass a DELETE DynamoDBMessage', (done) => {
+    it('performs a delete call on aws if we pass a DELETE DBMessage', (done) => {
       outStreamInput(exampleDeleteObj)
         .subscribe(...global.baseSubscriber(exampleDeleteObj, done))
 

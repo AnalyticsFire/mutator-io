@@ -2,7 +2,7 @@ import * as assert from 'assert'
 import * as proxyquire from 'proxyquire'
 import * as sinon from 'sinon'
 import * as events from 'events'
-import { Config, MqttMessage } from '../../src/input-streams/mqtt'
+import * as inputStreams from '../../src/input-streams'
 
 describe('Input - Mqtt', () => {
   const exampleObj = { my: 'example', obj: 'object' }
@@ -24,11 +24,11 @@ describe('Input - Mqtt', () => {
 
     const Mqtt = proxyquire('../../src/input-streams/mqtt', {
       'mqtt': MqttClientMock
-    }).default
+    })
 
     mqttInstance = new Mqtt({
       topics: exampleTopics
-    } as Config)
+    } as inputStreams.Mqtt.Config)
   })
 
   it('starts the stream and subscribes to topics when the client connects', () => {
@@ -51,7 +51,7 @@ describe('Input - Mqtt', () => {
     const expectedValue = {
       topic: exampleTopics[0],
       payload: exampleValue
-    } as MqttMessage
+    } as inputStreams.Mqtt.Message
 
     mqttInstance
       .create()
@@ -81,7 +81,7 @@ describe('Input - Mqtt', () => {
     const expectedValue = {
       topic: exampleTopics[0],
       payload: '{"some":"example","val":[1,2,3]'
-    } as MqttMessage
+    } as inputStreams.Mqtt.Message
 
     mqttInstance
       .create()

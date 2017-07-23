@@ -1,8 +1,12 @@
 import { Observable } from 'rxjs'
 import { OutputStream } from './'
 
-export default class PassThrough implements OutputStream {
+class PassThrough implements OutputStream {
   create () {
     return (message) => message
   }
 }
+
+module PassThrough {}
+
+export = PassThrough

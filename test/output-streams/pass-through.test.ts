@@ -1,13 +1,13 @@
 import * as assert from 'assert'
 import * as shared from '../../src/shared'
-import PassThrough from '../../src/output-streams/pass-through'
+import * as outputStreams from '../../src/output-streams'
 
 describe('Output - PassThrough', () => {
   const exampleObj = { my: 'example', obj: 'object' }
   let outStreamInput
 
   beforeEach(() => {
-    outStreamInput = (new PassThrough()).create()
+    outStreamInput = (new outputStreams.PassThrough()).create()
   })
 
   it('passes the value provided in the input to an output', (done) => {

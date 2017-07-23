@@ -1,6 +1,17 @@
+import * as outputStreams from './output-streams'
+import * as inputStreams from './input-streams'
+import * as transformStreams from './transform-streams'
+
+export { InputStream } from './input-streams'
+export { OutputStream } from './output-streams'
+export { TransformStream } from './transform-streams'
+
 export { MutatorIO, Pipe, Config } from './mutator-io'
 export { MutatorIO as default } from './mutator-io'
-export { InputStream, inputStreams } from './input-streams'
-export { OutputStream, outputStreams } from './output-streams'
-export { TransformStream, transformStreams } from './transform-streams'
 export { Subscription } from './subscription'
+
+export {
+  inputStreams,
+  transformStreams,
+  outputStreams
+}

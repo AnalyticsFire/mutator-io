@@ -3,21 +3,12 @@ import { IClientOptions } from 'mqtt/types'
 import { Observable, Observer } from 'rxjs'
 import { InputStream } from './'
 
-export interface MqttMessage {
-  topic: string,
-  payload: Object
-}
-
-export interface Config extends IClientOptions {
-  topics: string[]
-}
-
-export default class Mqtt implements InputStream {
+class Mqtt implements InputStream {
   client: mqtt.MqttClient
   clientObs: Observable<mqtt.MqttClient>
   topics: string[]
 
-  constructor (config: Config) {
+  constructor (config: Mqtt.Config) {
     const { topics, ...opts } = config
     this.topics = topics
     this.client = mqtt.connect(opts)
@@ -54,8 +45,8 @@ export default class Mqtt implements InputStream {
         })
         return Observable
           .forkJoin(observables)
-          .flatMap((): Observable<MqttMessage> => {
-            return Observable.create((observer: Observer<MqttMessage>) => {
+          .flatMap((): Observable<Mqtt.Message> => {
+            return Observable.create((observer: Observer<Mqtt.Message>) => {
               client.on('message', (topic, payload) => {
                 // TODO: Pipe buffer payload into a more performant JSON parser
                 let parsedPayload = payload.toString()
@@ -69,3 +60,16 @@ export default class Mqtt implements InputStream {
       })
   }
 }
+
+module Mqtt {
+  export interface Message {
+    topic: string,
+    payload: Object
+  }
+
+  export interface Config extends IClientOptions {
+    topics: string[]
+  }
+}
+
+export = Mqtt

@@ -5,6 +5,6 @@ export interface InputStream {
   create(): Observable<Object>
 }
 
-export const inputStreams = {
+export {
   Mqtt
 }
