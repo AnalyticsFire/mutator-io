@@ -4,7 +4,7 @@ import * as sinon from 'sinon'
 import { Observable, Subject } from 'rxjs'
 import logger from '../src/logger'
 import {
-  Pipe,
+  MutatorIO,
   transformStreams,
   outputStreams,
   InputStream,
@@ -21,9 +21,9 @@ describe('MutatorIO', () => {
     create: () => (msg) => Observable.of(msg + 'output add')
   } as OutputStream
 
-  const MutatorIO = proxyquire('../src/mutator-io', {
+  const MutatorIOMock = proxyquire('../src/mutator-io', {
     './logger': logger
-  }).MutatorIO
+  })
 
   let mockInput
   let loggerSpy
@@ -32,13 +32,13 @@ describe('MutatorIO', () => {
   beforeEach(() => {
     mockInput = new Subject()
     loggerSpy = global.sandbox.spy(logger, 'info')
-    mutatorIO = new MutatorIO([
+    mutatorIO = new MutatorIOMock([
       {
         name: 'custom-pipe1',
         in: mockInputStream,
         out: mockOutputStream
       }
-    ] as Array<Pipe>, {
+    ] as Array<MutatorIO.Pipe>, {
       LOG_LEVEL: 'NONE'
     })
   })

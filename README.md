@@ -47,20 +47,14 @@ mutator.start()
 
 ## Main library signature
 ```typescript
-enum LogLevels {
-  'NONE'
-  'DEBUG'
-  'INFO'
-}
-
 interface Config {
-  COLORS?: boolean;
-  LOG_LEVEL?: LogLevels;
+  COLORS?: boolean
+  LOG_LEVEL?: 'NONE' | 'INFO' | 'DEBUG'
 }
 
 class MutatorIO {
   // Constructor receives an array of Pipes and an optional Config object
-  constructor(pipes: Array<Pipe>, config?: Config);
+  constructor(pipes: Array<Pipe>, config?: Config)
   // Used internally by subscription to remove a trasnformer
   removeTransformer(pipeName: string, index: number): boolean
   // Main method used to add a transformation to an existing pipe
@@ -94,7 +88,7 @@ mutator.transform('myPipeName', (msg) => Promise.resolve(msg + 'something else d
 // Transformers can implement Typescript interfaces provided by output Streams
 // E.G. this transform operation transforms the incoming payload from myPipeName
 // into a DynamoDB delete query, treating payload as the key of the item to delete
-mutator.transform('myPipeName', (msg): outputStreams.Dynamo.DynamoDBMessage => {
+mutator.transform('myPipeName', (msg): outputStreams.DynamoDB.Message => {
   operation: outputStreams.DynamoDB.Operations.DELETE,
     params: {
       TableName: 'processor_test',

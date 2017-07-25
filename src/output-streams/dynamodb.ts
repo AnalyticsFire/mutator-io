@@ -13,15 +13,19 @@ class DynamoDB implements OutputStream {
     return (msg: DynamoDB.Message) => {
       return Observable.of(msg)
         .flatMap((msg: DynamoDB.Message) => {
+          if (!msg) {
+            return Observable.empty()
+          }
+
           return Observable.create((observer: Observer<Object>) => {
             if (!msg.operation) {
-              return observer.error('The format of the message for this output stream is invalid')
+              return observer.error(new Error('The format of the message for this output stream is invalid'))
             }
 
             const method = this.client[msg.operation]
             method.call(this.client, msg.params || {}, (error, data) => {
               if (error) {
-                return observer.error(error)
+                return observer.error(new Error(error))
               }
               observer.next(msg)
             })
@@ -34,7 +38,8 @@ class DynamoDB implements OutputStream {
 module DynamoDB {
   export enum Operations {
     PUT = 'put',
-    DELETE = 'delete'
+    DELETE = 'delete',
+    UPDATE = 'update'
   }
 
   export interface Message {

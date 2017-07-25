@@ -11,8 +11,11 @@ class Mqtt implements InputStream {
   constructor (config: Mqtt.Config) {
     const { topics, ...opts } = config
     this.topics = topics
-    this.client = mqtt.connect(opts)
     this.clientObs = Observable.create((observer: Observer<any>) => {
+      if (this.client) {
+        return observer.next(this.client)
+      }
+      this.client = mqtt.connect(opts)
       this.client.on('connect', () => {
         observer.next(this.client)
       })

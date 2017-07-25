@@ -1,7 +1,7 @@
 import * as assert from 'assert'
 import * as proxyquire from 'proxyquire'
 import * as sinon from 'sinon'
-import * as outputStreams from '../../src/output-streams'
+import { outputStreams } from '../../src/'
 
 describe('Output - DynamoDB', () => {
   let outStreamInput
@@ -56,11 +56,11 @@ describe('Output - DynamoDB', () => {
 
     describe('Error handling', () => {
       it('outputs an error if the aws call failed', (done) => {
-        const errorMsg = 'put error message'
+        const error = new Error('put error message')
 
         outStreamInput(examplePutObj)
           .subscribe(() => { }, (err) => {
-            assert(err === errorMsg)
+            assert.deepEqual(err, error)
             done()
           })
 
@@ -71,7 +71,7 @@ describe('Output - DynamoDB', () => {
         const callback = putSpy.getCall(0).args[1]
         assert(callback instanceof Function)
 
-        callback(errorMsg, {})
+        callback(error, {})
       })
     })
   })
@@ -102,11 +102,11 @@ describe('Output - DynamoDB', () => {
 
     describe('Error handling', () => {
       it('outputs an error if the aws call failed', (done) => {
-        const errorMsg = 'put error message'
+        const error = new Error('put error message')
 
         outStreamInput(exampleDeleteObj)
           .subscribe(() => { }, (err) => {
-            assert(err === errorMsg)
+            assert.deepEqual(err, error)
             done()
           })
 
@@ -117,7 +117,7 @@ describe('Output - DynamoDB', () => {
         const callback = deleteSpy.getCall(0).args[1]
         assert(callback instanceof Function)
 
-        callback(errorMsg, {})
+        callback(error, {})
       })
     })
   })

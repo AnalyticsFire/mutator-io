@@ -7,41 +7,22 @@ import { Subscription } from './subscription'
 import * as shared from './shared'
 import logger from './logger'
 
-export interface Pipe {
-  name: string,
-  in: InputStream,
-  out: OutputStream
-}
-
-export interface Transformers {
-  [name: string]: Array<TransformStream>
-}
-
-export interface Subscriptions {
-  [id: string]: Subscription
-}
-
-export interface Config {
-  COLORS?: boolean
-  LOG_LEVEL?: 'NONE' | 'INFO' | 'DEBUG'
-}
-
 interface pipeResult extends Array<Object> {
   0: string,
   1: Observable<Object>
   2: Subscription
 }
 
-export class MutatorIO {
-  public transformers: Transformers = {}
-  public subscriptions: Subscriptions = {}
+class MutatorIO {
+  public transformers: MutatorIO.Transformers = {}
+  public subscriptions: MutatorIO.Subscriptions = {}
 
-  static defaultConfig: Config = {
+  static defaultConfig: MutatorIO.Config = {
     LOG_LEVEL: 'INFO',
     COLORS: true
   }
 
-  constructor (public pipes: Array<Pipe>, public config: Config = {}) {
+  constructor (public pipes: Array<MutatorIO.Pipe>, public config: MutatorIO.Config = {}) {
     this.config = { ...MutatorIO.defaultConfig, ...config }
     logger.level = this.config.LOG_LEVEL.toString().toLowerCase()
     if (!this.config.COLORS) {
@@ -68,7 +49,7 @@ export class MutatorIO {
     return subscription
   }
 
-  private composeStream (pipe: Pipe, transformer: TransformStream): pipeResult {
+  private composeStream (pipe: MutatorIO.Pipe, transformer: TransformStream): pipeResult {
     const inStream = pipe.in.create()
     const outStream = pipe.out.create()
 
@@ -118,3 +99,26 @@ export class MutatorIO {
     streams.map(this.subscribeToStream)
   }
 }
+
+module MutatorIO {
+  export interface Pipe {
+    name: string,
+    in: InputStream,
+    out: OutputStream
+  }
+
+  export interface Transformers {
+    [name: string]: Array<TransformStream>
+  }
+
+  export interface Subscriptions {
+    [id: string]: Subscription
+  }
+
+  export interface Config {
+    COLORS?: boolean
+    LOG_LEVEL?: 'NONE' | 'INFO' | 'DEBUG'
+  }
+}
+
+export = MutatorIO

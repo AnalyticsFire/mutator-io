@@ -15,7 +15,7 @@ interface Config extends IClientOptions {
 This kind of security is supported just like it is in MQTT.js (though there aren't many examples around)
 
 ```typescript
-const myInputStream = new inputStreams.Mqtt.default({
+const myInputStream = new inputStreams.Mqtt({
   protocol: 'mqtts',
   host: 'my-endpoint.iot.eu-central-1.amazonaws.com',
   port: 8883,

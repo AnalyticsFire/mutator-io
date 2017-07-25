@@ -5,15 +5,16 @@ Ideally this should leverage Rx.js to perform fail-safe operations like batchWri
 
 The configuration required is [exactly the same of the original sdk](https://github.com/aws/aws-sdk-js/blob/master/lib/dynamodb/document_client.d.ts).
 
-The `create` method returns a function that accepts a custom `DynamoDBMessage` type parameter.
+The `create` method returns a function that accepts a custom `Message` type parameter.
 
 ```typescript
 enum Operations {
   PUT = 'put',
   DELETE = 'delete'
+  UPDATE = 'update'
 }
 
-interface DynamoDBMessage {
+interface Message {
   operation: Operations
   params: Object
 }
@@ -23,7 +24,7 @@ As long as the transformation returns an object shaped this way, this output str
 
 ### Transformation example:
 ```typescript
-mutatorIOInstance.transform('myPipeName', (msg) => {
+mutatorIOInstance.transform('myPipeName', (msg): outputStreams.DynamoDB.Message => {
   const params = {
     TableName : 'test_table',
     Item: {

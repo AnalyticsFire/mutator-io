@@ -2,7 +2,7 @@ import * as assert from 'assert'
 import * as proxyquire from 'proxyquire'
 import * as sinon from 'sinon'
 import * as events from 'events'
-import * as inputStreams from '../../src/input-streams'
+import { inputStreams } from '../../src/'
 
 describe('Input - Mqtt', () => {
   const exampleObj = { my: 'example', obj: 'object' }

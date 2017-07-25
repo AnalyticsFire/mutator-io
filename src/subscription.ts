@@ -1,6 +1,6 @@
 import * as c from 'colors/safe'
 import { Observable, Subscription as RxjsSubscription } from 'rxjs'
-import { MutatorIO } from './mutator-io'
+import * as MutatorIO from './mutator-io'
 import * as uuidv1 from 'uuid/v1'
 import logger from './logger'
 
