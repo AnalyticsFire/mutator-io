@@ -7,16 +7,19 @@ describe('Output - DynamoDB', () => {
   let outStreamInput
   let putSpy
   let deleteSpy
+  let updateSpy
   let AwsDynamoDBMock
 
   beforeEach(() => {
     putSpy = global.sandbox.spy()
     deleteSpy = global.sandbox.spy()
+    updateSpy = global.sandbox.spy()
 
     class DocumentClientMock {
       constructor (config) { }
       put (...args) { putSpy.apply(this, args) }
       delete (...args) { deleteSpy.apply(this, args) }
+      update (...args) { updateSpy.apply(this, args) }
     }
 
     AwsDynamoDBMock = {
@@ -40,7 +43,7 @@ describe('Output - DynamoDB', () => {
       params: exampleParams
     } as outputStreams.DynamoDB.Message
 
-    it('performs a put call on aws if we pass a PUT DBMessage', (done) => {
+    it('performs a put call on aws if we pass a PUT Message', (done) => {
       outStreamInput(examplePutObj)
         .subscribe(...global.baseSubscriber(examplePutObj, done))
 
@@ -86,7 +89,7 @@ describe('Output - DynamoDB', () => {
       params: exampleParams
     } as outputStreams.DynamoDB.Message
 
-    it('performs a delete call on aws if we pass a DELETE DBMessage', (done) => {
+    it('performs a delete call on aws if we pass a DELETE Message', (done) => {
       outStreamInput(exampleDeleteObj)
         .subscribe(...global.baseSubscriber(exampleDeleteObj, done))
 
@@ -115,6 +118,52 @@ describe('Output - DynamoDB', () => {
         assert.equal(deleteSpy.getCall(0).args[0], exampleParams)
 
         const callback = deleteSpy.getCall(0).args[1]
+        assert(callback instanceof Function)
+
+        callback(error, {})
+      })
+    })
+  })
+
+  describe('UPDATE operation', () => {
+    const exampleParams = {
+      my: 'example',
+      obj: 'object'
+    }
+    const exampleUpdateObj = {
+      operation: outputStreams.DynamoDB.Operations.UPDATE,
+      params: exampleParams
+    } as outputStreams.DynamoDB.Message
+
+    it('performs an update call on aws if we pass an UPDATE Message', (done) => {
+      outStreamInput(exampleUpdateObj)
+        .subscribe(...global.baseSubscriber(exampleUpdateObj, done))
+
+      assert(updateSpy.called)
+      assert(updateSpy.getCalls().length === 1)
+      assert.equal(updateSpy.getCall(0).args[0], exampleParams)
+
+      const callback = updateSpy.getCall(0).args[1]
+      assert(callback instanceof Function)
+
+      callback(null, {})
+    })
+
+    describe('Error handling', () => {
+      it('outputs an error if the aws call failed', (done) => {
+        const error = new Error('put error message')
+
+        outStreamInput(exampleUpdateObj)
+          .subscribe(() => { }, (err) => {
+            assert.deepEqual(err, error)
+            done()
+          })
+
+        assert(updateSpy.called)
+        assert(updateSpy.getCalls().length === 1)
+        assert.equal(updateSpy.getCall(0).args[0], exampleParams)
+
+        const callback = updateSpy.getCall(0).args[1]
         assert(callback instanceof Function)
 
         callback(error, {})

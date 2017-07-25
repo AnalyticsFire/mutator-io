@@ -62,7 +62,7 @@ class MutatorIO {
         .flatMap((msg) => shared.wrapToObservable(outStream(msg))
           .catch((err) => {
             logger.error(err)
-            return inStream
+            return Observable.empty()
           })
         ),
       this.subscriptions[transformer.subscriptionId]
