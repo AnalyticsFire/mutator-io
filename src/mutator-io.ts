@@ -27,7 +27,7 @@ class MutatorIO {
     logger.level = this.config.LOG_LEVEL.toString().toLowerCase()
     if (!this.config.COLORS) {
       c.enabled = false
-      logger.transports.console.colorize = false
+      logger.transports['mutator-io-logger'].colorize = false
     }
   }
 

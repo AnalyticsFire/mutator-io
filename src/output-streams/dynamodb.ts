@@ -47,7 +47,7 @@ module DynamoDB {
     params: Object
   }
 
-  export interface Config extends AwsDynamoDB.Types.DocumentClient.DocumentClientOptions {
+  export interface Config extends AwsDynamoDB.Types.DocumentClient.DocumentClientOptions, AwsDynamoDB.Types.ClientConfiguration {
   }
 }
 
