@@ -100,6 +100,8 @@ mutator.transform('myPipeName', (msg): outputStreams.DynamoDB.Message => {
 })
 ```
 
+## [Full Typescript documentation](/doc/typedoc)
+
 ## Contributing
 
 Use `npm link` inside your clone of this repo to create a sym link that you can reference with `npm link mutator-io` inside your "test" project. This way you can run `npm run build:watch` and keep working on the library while testing it on an example project (or just use tests)
