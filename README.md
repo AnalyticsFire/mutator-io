@@ -1,6 +1,7 @@
 # Mutator I/O
 
 [![Build Status](https://travis-ci.org/AnalyticsFire/mutator-io.svg?branch=master)](https://travis-ci.org/AnalyticsFire/mutator-io)
+[![NPM version](https://badge.fury.io/js/mutator-io.svg)](https://badge.fury.io/js/mutator-io)
 [![Standard JS](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![TypeScript](https://cdn.rawgit.com/ellerbrock/typescript-badges/6e8282b8/badges/version/typescript-v2.4.svg)](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-4.html)
 
@@ -110,6 +111,7 @@ Use `npm link` inside your clone of this repo to create a sym link that you can 
 ```javascript
 "build"          // Builds the files using tsc
 "build:watch"    // Builds the files using tsc with -w argument recompile on change
+"doc"            // Generates the documentation leveraging Typescript via Typedoc
 "lint"           // Lints and autofix problems using eslint with Typescript parser
 "test"           // Launches mocha tests
 "test:watch"     // Launches mocha tests with watch optin to retrigger on change
@@ -121,6 +123,6 @@ Use `npm link` inside your clone of this repo to create a sym link that you can 
   - ~~Add documentation on the existing pre-defined streams (Mqtt, passThrough, DynamoDB)~~
   - ~~Add documentation on how to construct an inputStream~~
   - ~~Add documentation on how to construct an outputStream~~
-  - Create further documentation leveraging typescript
-  - Add better error handling
+  - ~~Create further documentation leveraging typescript~~
   - ~~Add tests coverage~~
+  - Add better error handling

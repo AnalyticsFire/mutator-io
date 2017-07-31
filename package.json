@@ -7,12 +7,13 @@
   "scripts": {
     "build": "rm -rf dist; tsc -d",
     "build:watch": "rm -rf dist; tsc -w -d",
+    "doc": "rm -rf doc/typedoc && typedoc --out doc/typedoc . --ignoreCompilerErrors  --theme markdown --readme none --gitRevision master",
     "lint": "eslint src test --fix --ext ts",
     "test": "mocha --recursive --compilers ts:espower-typescript/guess test/helper.ts test",
     "test:watch": "mocha --watch --watch-extensions ts --recursive --compilers ts:espower-typescript/guess test/helper.ts test",
     "test:debug": "iron-node ./node_modules/mocha/bin/_mocha --recursive --compilers ts:espower-typescript/guess test/helper.ts test",
     "publish-please": "publish-please",
-    "prepublish": "npm run build && npm run lint && npm test"
+    "prepublish": "npm run build && npm run doc && npm run lint && npm test"
   },
   "repository": {
     "type": "git",
@@ -60,6 +61,8 @@
     "proxyquire": "^1.8.0",
     "publish-please": "^2.3.1",
     "sinon": "^2.3.8",
+    "typedoc": "^0.8.0",
+    "typedoc-plugin-markdown": "^1.0.6",
     "typescript": "^2.4.1",
     "typescript-eslint-parser": "^4.0.0"
   },
