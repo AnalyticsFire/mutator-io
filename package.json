@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "lerna run test",
+    "test": "lerna bootstrap && lerna run test",
     "lint": "eslint './packages/**/*.ts' --ignore-path .gitignore --fix"
   },
   "pre-commit": [
