@@ -1,4 +1,6 @@
 # MQTT input stream
+[![NPM version](https://badge.fury.io/js/mutator-io.svg)](https://badge.fury.io/js/mutator-io)
+
 MQTT input stream provides an easy wrapper around [MQTT.js](https://github.com/mqttjs/MQTT.js) for [mutator-io](https://github.com/AnalyticsFire/mutator-io).
 
 ## Installation

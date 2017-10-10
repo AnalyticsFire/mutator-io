@@ -3,7 +3,7 @@ import { IClientOptions } from 'mqtt/types'
 import { Observable, Observer } from 'rxjs'
 import { InputStream } from 'mutator-io'
 
-class Mqtt implements InputStream<any> {
+class Mqtt implements InputStream<Mqtt.Message> {
   client: mqtt.MqttClient
   clientObs: Observable<mqtt.MqttClient>
   topics: string[]

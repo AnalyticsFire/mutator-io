@@ -1,4 +1,6 @@
 # DynamoDB output stream
+[![NPM version](https://badge.fury.io/js/mutator-io.svg)](https://badge.fury.io/js/mutator-io)
+
 DynamoDB output stream aims to cover as many operations possible via [aws sdk](https://github.com/aws/aws-sdk-js) DynamoDB module to be used with [mutator-io](https://github.com/AnalyticsFire/mutator-io).
 
 ## Installation

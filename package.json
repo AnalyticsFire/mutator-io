@@ -1,11 +1,13 @@
 {
   "scripts": {
+    "build": "lerna run build",
     "test": "lerna bootstrap && lerna run test",
     "lint": "eslint './packages/**/*.ts' --ignore-path .gitignore --fix"
   },
   "pre-commit": [
     "lint",
-    "test"
+    "test",
+    "build"
   ],
   "devDependencies": {
     "eslint": "^4.8.0",

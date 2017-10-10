@@ -101,6 +101,12 @@ mutator.transform('myPipeName', (msg): outputStreams.DynamoDB.Message => {
 This project leverages [lerna.js](lernajs.io) to handle multiple npm packages at the same time. Use `npm i && lerna bootstrap` to initialise the main repository as well as all the sub-packages. This will also act just like `npm link` so the packages that depends on eachothers will keep working.
 `pre-commit` ensures that commits are linted and tests are green in order to perform a new commit.
 
+### Top level NPM Scripts
+```javascript
+"build"          // Builds all packages via tsc
+"test"           // Runs lerna bootstrap and runs tests across all packages
+"lint"           // Lints (and tries to fix) source code for all the packages
+```
 ### NPM Scripts present in all packages
 Each package has the possibility to run the following scripts:
 ```javascript
