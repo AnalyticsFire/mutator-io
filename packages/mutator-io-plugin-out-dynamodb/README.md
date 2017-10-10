@@ -1,6 +1,11 @@
 # DynamoDB output stream
 DynamoDB output stream aims to cover as many operations possible via [aws sdk](https://github.com/aws/aws-sdk-js) DynamoDB module to be used with [mutator-io](https://github.com/AnalyticsFire/mutator-io).
 
+## Installation
+```
+npm i mutator-io-plugin-out-dynamodb
+```
+
 Ideally this should leverage Rx.js to perform fail-safe operations like batchWriteItem. This means that we can hide the whole logic of retrying failed calls (e.g. consuming `UnprocessedItems` returned from the standard BatchWriteItem call untill all of them are written)
 
 The configuration required is [exactly the same of the original sdk](https://github.com/aws/aws-sdk-js/blob/master/lib/dynamodb/document_client.d.ts).
@@ -43,3 +48,4 @@ mutatorIOInstance.transform('myPipeName', (msg): outputStreams.DynamoDB.Message 
   }
 })
 ```
+## [Typescript documentation](doc/README.md)

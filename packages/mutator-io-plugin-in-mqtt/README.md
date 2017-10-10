@@ -1,6 +1,11 @@
 # MQTT input stream
 MQTT input stream provides an easy wrapper around [MQTT.js](https://github.com/mqttjs/MQTT.js) for [mutator-io](https://github.com/AnalyticsFire/mutator-io).
 
+## Installation
+```
+npm i mutator-io-plugin-in-mqtt
+```
+
 The configuration required is exactly the same, with the except of a new keyword called `topics` that will indicate which topics this instance should subscribe to.
 
 ```typescript
@@ -27,3 +32,4 @@ const myInputStream = new inputStreams.Mqtt({
   topics: ['something/+/+/+/status/+/+/+']
 })
 ```
+## [Typescript documentation](doc/README.md)

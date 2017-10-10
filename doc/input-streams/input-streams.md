@@ -3,8 +3,8 @@ An "input stream" in mutator-io is a class that can create Observables from a sp
 
 ## Interface
 ```typescript
-interface InputStream {
-  create(): Observable<Object>
+interface InputStream<T> {
+  create(): Observable<T>
 }
 ```
 
