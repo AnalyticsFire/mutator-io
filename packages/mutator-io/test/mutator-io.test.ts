@@ -14,7 +14,7 @@ import {
 describe('MutatorIO', () => {
   const mockInputStream = {
     create: () => mockInput
-  } as InputStream
+  } as InputStream<any>
   const mockOutputStream = {
     create: () => (msg) => Observable.of(msg + 'output add')
   } as OutputStream
