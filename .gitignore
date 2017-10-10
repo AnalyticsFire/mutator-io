@@ -13,10 +13,8 @@ pids
 dist
 
 # Dependency directories
+packages/*/node_modules/
 node_modules/
-
-# Typescript v1 declaration files
-typings/
 
 # Optional npm cache directory
 .npm

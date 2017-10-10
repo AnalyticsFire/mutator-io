@@ -4,7 +4,7 @@ An "output stream" in mutator-io is a class that exposes a function to pass valu
 ## Interface
 ```typescript
 interface OutputStreamCreateMethod {
-  (msg: Object): Observable<Object>
+  (msg: Object): Observable<any>
 }
 
 interface OutputStream {

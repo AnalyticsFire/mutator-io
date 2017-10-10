@@ -27,19 +27,17 @@ interface Pipe {
 ![Input output](../master/doc/assets/input-output.png?raw=true)
 
 ```typescript
-import {
-  MutatorIO,
-  inputStreams,
-  outputStreams
-} from 'mutator-io'
+import { MutatorIO } from 'mutator-io'
+import MqttInputStream from 'mutator-io-plugin-in-mqtt'
+import DynamoDBOutputStream from 'mutator-io-plugin-out-dynamodb'
 
 const myPipe = {
   name: 'myPipeName',
-  in: new inputStreams.Mqtt({
+  in: new MqttInputStream({
     url: 'mqtt://localhost:1883',
     topics: ['mytopic']
   }),
-  out: new outputStreams.DynamoDB(),
+  out: new DynamoDBOutputStream(),
 }
 
 const mutator = new MutatorIO([myPipe])
@@ -67,13 +65,9 @@ class MutatorIO {
 
 ## Default Input/Transform/Output streams
   - ### Input
-    - [MQTT](doc/input-streams/mqtt.md)
-  - ### Transform
-    - [Pass-through](doc/transform-streams/pass-through.md)
+    - [MQTT](packages/mutator-io-plugin-in-mqtt/README.md) available through `npm i mutator-io-plugin-in-mqtt`
   - ### Output
-    - [DynamoDB](doc/output-streams/dynamodb.md)
-    - [Pass-through](doc/output-streams/pass-through.md)
-
+    - [DynamoDB](packages/mutator-io-plugin-out-dynamodb/README.md) available through `npm i mutator-io-plugin-out-dynamodb`
 ## Adding transformations
 Once you create a pipe, you have the possiblity to append data transformations to manipulate / aggregate / mutate the incoming data as you please (before it gets to the outputStream in the pipe)
 
@@ -100,31 +94,26 @@ mutator.transform('myPipeName', (msg): outputStreams.DynamoDB.Message => {
 })
 ```
 
-## [Full Typescript documentation](/doc/typedoc)
+## [mutator-io Typescript documentation](/packages/mutator-io/doc)
 
 ## Contributing
 
-Use `npm link` inside your clone of this repo to create a sym link that you can reference with `npm link mutator-io` inside your "test" project. This way you can run `npm run build:watch` and keep working on the library while testing it on an example project (or just use tests)
-
+This project leverages [lerna.js](lernajs.io) to handle multiple npm packages at the same time. Use `npm i && lerna bootstrap` to initialise the main repository as well as all the sub-packages. This will also act just like `npm link` so the packages that depends on eachothers will keep working.
 `pre-commit` ensures that commits are linted and tests are green in order to perform a new commit.
 
-### NPM Scripts
-
+### Top level NPM Scripts
+```javascript
+"build"          // Builds all packages via tsc
+"test"           // Runs lerna bootstrap and runs tests across all packages
+"lint"           // Lints (and tries to fix) source code for all the packages
+```
+### NPM Scripts present in all packages
+Each package has the possibility to run the following scripts:
 ```javascript
 "build"          // Builds the files using tsc
 "build:watch"    // Builds the files using tsc with -w argument recompile on change
 "doc"            // Generates the documentation leveraging Typescript via Typedoc
-"lint"           // Lints and autofix problems using eslint with Typescript parser
 "test"           // Launches mocha tests
 "test:watch"     // Launches mocha tests with watch optin to retrigger on change
 "test:debug"     // Launches iron-node with source maps support to debug tests
-"publish-please" // Uses publish-please to release a new npm version
 ```
-
-### TODO
-  - ~~Add documentation on the existing pre-defined streams (Mqtt, passThrough, DynamoDB)~~
-  - ~~Add documentation on how to construct an inputStream~~
-  - ~~Add documentation on how to construct an outputStream~~
-  - ~~Create further documentation leveraging typescript~~
-  - ~~Add tests coverage~~
-  - Add better error handling

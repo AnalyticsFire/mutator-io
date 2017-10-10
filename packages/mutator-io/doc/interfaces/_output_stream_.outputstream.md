@@ -1,0 +1,31 @@
+[mutator-io](../README.md) > ["output-stream"](../modules/_output_stream_.md) > [OutputStream](../interfaces/_output_stream_.outputstream.md)
+
+
+
+# Interface: OutputStream
+
+
+## Methods
+<a id="create"></a>
+
+###  create
+
+► **create**(): [OutputStreamCreateMethod](_output_stream_.outputstreamcreatemethod.md)
+
+
+
+*Defined in output-stream.ts:8*
+
+
+
+
+
+**Returns:** [OutputStreamCreateMethod](_output_stream_.outputstreamcreatemethod.md)
+
+
+
+
+
+___
+
+

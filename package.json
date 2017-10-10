@@ -1,81 +1,26 @@
 {
-  "name": "mutator-io",
-  "version": "0.1.5",
-  "description": "A tiny library to handle (big) data transformations",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "rm -rf dist; tsc -d",
-    "build:watch": "rm -rf dist; tsc -w -d",
-    "doc": "rm -rf doc/typedoc && typedoc --out doc/typedoc . --ignoreCompilerErrors  --theme markdown --readme none --gitRevision master",
-    "lint": "eslint src test --fix --ext ts",
-    "test": "mocha --recursive --compilers ts:espower-typescript/guess test/helper.ts test",
-    "test:watch": "mocha --watch --watch-extensions ts --recursive --compilers ts:espower-typescript/guess test/helper.ts test",
-    "test:debug": "iron-node ./node_modules/mocha/bin/_mocha --recursive --compilers ts:espower-typescript/guess test/helper.ts test",
-    "publish-please": "publish-please",
-    "prepublish": "npm run build && npm run doc && npm run lint && npm test"
+    "build": "lerna run build",
+    "test": "lerna bootstrap && lerna run test",
+    "lint": "eslint './packages/**/*.ts' --ignore-path .gitignore --fix"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AnalyticsFire/mutator-io.git"
-  },
-  "author": "Analyticsfire",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/AnalyticsFire/mutator-io/issues"
-  },
-  "homepage": "https://github.com/AnalyticsFire/mutator-io#readme",
   "pre-commit": [
     "lint",
-    "test"
+    "test",
+    "build"
   ],
-  "files": [
-    "dist"
-  ],
-  "publishConfig": {
-    "access": "public"
-  },
-  "dependencies": {
-    "aws-sdk": "^2.86.0",
-    "colors": "^1.1.2",
-    "mqtt": "^2.9.1",
-    "rxjs": "^5.4.2",
-    "uuid": "^3.1.0",
-    "winston": "^2.3.1"
-  },
   "devDependencies": {
-    "@types/mocha": "^2.2.41",
-    "@types/node": "^8.0.14",
-    "eslint": "^4.2.0",
+    "eslint": "^4.8.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-node": "^5.2.0",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "eslint-plugin-typescript": "^0.3.0",
     "espower-typescript": "^8.0.2",
-    "iron-node": "^3.0.19",
-    "mocha": "^3.4.2",
-    "power-assert": "^1.4.4",
+    "lerna": "^2.4.0",
     "pre-commit": "^1.2.2",
-    "proxyquire": "^1.8.0",
-    "publish-please": "^2.3.1",
-    "sinon": "^2.3.8",
-    "typedoc": "^0.8.0",
-    "typedoc-plugin-markdown": "^1.0.6",
-    "typescript": "^2.4.1",
-    "typescript-eslint-parser": "^4.0.0"
-  },
-  "directories": {
-    "doc": "doc",
-    "test": "test"
-  },
-  "keywords": [
-    "typescript",
-    "rxjs",
-    "transform",
-    "data",
-    "big",
-    "streams"
-  ]
+    "typescript": "^2.5.3",
+    "typescript-eslint-parser": "^7.0.0"
+  }
 }
