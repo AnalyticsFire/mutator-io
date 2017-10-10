@@ -28,8 +28,8 @@ interface Pipe {
 
 ```typescript
 import { MutatorIO } from 'mutator-io'
-import MqttInputStream from 'mutator-io-plugin-in-mqtt'
-import DynamoDBOutputStream from 'mutator-io-plugin-out-dynamodb'
+import * as MqttInputStream from 'mutator-io-plugin-in-mqtt'
+import * as DynamoDBOutputStream from 'mutator-io-plugin-out-dynamodb'
 
 const myPipe = {
   name: 'myPipeName',
