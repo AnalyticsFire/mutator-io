@@ -96,7 +96,7 @@ class MutatorIO {
         return acc.concat(currentPipeResult)
       }, [])
 
-    streams.map(this.subscribeToStream)
+    streams.forEach(this.subscribeToStream)
   }
 }
 
