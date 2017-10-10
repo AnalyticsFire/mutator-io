@@ -14,7 +14,7 @@ import {
 describe('MutatorIO', () => {
   const mockInputStream = {
     create: () => mockInput
-  } as InputStream
+  } as InputStream<any>
   const mockOutputStream = {
     create: () => (msg) => Observable.of(msg + 'output add')
   } as OutputStream
@@ -58,10 +58,12 @@ describe('MutatorIO', () => {
     assert(loggerSpy.lastCall.args[0] === 'input add transform add output add')
   })
 
-  it('displays an error if we try to start it without transformers', () => {
+  it('composes a stream with just input + output (no transform)', () => {
     mutatorIO.start()
-    assert(loggerSpy.getCalls().length === 1)
-    assert(loggerSpy.lastCall.args[0].indexOf('There are no transformers set') > -1)
+    mockInput.next('input add ')
+
+    assert(loggerSpy.getCalls().length === 2)
+    assert(loggerSpy.lastCall.args[0] === 'input add output add')
   })
 
   describe('Subscription', () => {

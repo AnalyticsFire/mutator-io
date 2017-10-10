@@ -81,22 +81,22 @@ class MutatorIO {
   }
 
   start (): void {
-    const transformerKeys = Object.keys(this.transformers)
+    const streams = this.pipes
+      .reduce((acc, pipe): Array<pipeResult> => {
+        let currentTransformers = this.transformers[pipe.name]
 
-    if (!transformerKeys.length) {
-      return logger.info(`${c.rainbow('•••')} There are no transformers set ${c.rainbow('•••')}`)
-    }
+        if (!currentTransformers || !currentTransformers.length) {
+          this.transform(pipe.name, msg => msg)
+          currentTransformers = this.transformers[pipe.name]
+        }
 
-    const streams = transformerKeys.reduce((acc, pipeName): Array<pipeResult> => {
-      const currentPipe = this.pipes.find((pipe) => pipe.name === pipeName)
+        const currentPipeResult = currentTransformers
+          .map((transformer) => this.composeStream(pipe, transformer))
 
-      const currentPipeResult = this.transformers[pipeName]
-        .map((transformer) => this.composeStream(currentPipe, transformer))
+        return acc.concat(currentPipeResult)
+      }, [])
 
-      return acc.concat(currentPipeResult)
-    }, [])
-
-    streams.map(this.subscribeToStream)
+    streams.forEach(this.subscribeToStream)
   }
 }
 
