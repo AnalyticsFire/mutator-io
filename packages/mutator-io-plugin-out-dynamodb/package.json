@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/AnalyticsFire/mutator-io/issues"
   },
-  "homepage": "https://github.com/AnalyticsFire/mutator-io#readme",
+  "homepage": "https://github.com/AnalyticsFire/mutator-io/tree/master/packages/mutator-io-plugin-out-dynamodb",
   "files": [
     "dist"
   ],
