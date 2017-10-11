@@ -74,6 +74,8 @@ Once you create a pipe, you have the possiblity to append data transformations t
 ![Input transform output](../master/doc/assets/input-transform-output.png?raw=true)
 
 ```typescript
+import * as DynamoDBOutputStream from 'mutator-io-plugin-out-dynamodb'
+
 // Transform can be a simple function
 // or a function returning an Observable or a Promise
 mutator.transform('myPipeName', (msg) => msg + 'something')
@@ -83,8 +85,8 @@ mutator.transform('myPipeName', (msg) => Promise.resolve(msg + 'something else d
 // Transformers can implement Typescript interfaces provided by output Streams
 // E.G. this transform operation transforms the incoming payload from myPipeName
 // into a DynamoDB delete query, treating payload as the key of the item to delete
-mutator.transform('myPipeName', (msg): outputStreams.DynamoDB.Message => {
-  operation: outputStreams.DynamoDB.Operations.DELETE,
+mutator.transform('myPipeName', (msg): DynamoDBOutputStream.Message => {
+  operation: DynamoDBOutputStream.Operations.DELETE,
     params: {
       TableName: 'processor_test',
       Key: {
