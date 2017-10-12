@@ -1,3 +1,4 @@
+import * as Rx from 'rxjs'
 import * as assert from 'assert'
 import * as proxyquire from 'proxyquire'
 import * as sinon from 'sinon'
@@ -11,7 +12,7 @@ describe('Output - DynamoDB', () => {
   let AwsDynamoDBMock
 
   beforeEach(() => {
-    putSpy = global.sandbox.spy()
+    putSpy = global.sandbox.stub()
     deleteSpy = global.sandbox.spy()
     updateSpy = global.sandbox.spy()
 
@@ -75,6 +76,28 @@ describe('Output - DynamoDB', () => {
         assert(callback instanceof Function)
 
         callback(error, {})
+      })
+      it('retries N times if we add "retry" parameter in the message', (done) => {
+        const error = new Error('put error message')
+        const inputOutputMsg = { ...examplePutObj, retry: 3 } as DynamoDB.Message
+
+        const scheduler = new Rx.TestScheduler(() => true)
+
+        const test = outStreamInput(inputOutputMsg, scheduler)
+
+        global.sandbox.stub(console, 'error')
+
+        putSpy.onCall(0).callsArgWith(1, error, {})
+        putSpy.onCall(1).callsArgWith(1, error, {})
+        putSpy.onCall(2).callsArgWith(1, null, {})
+
+        test.subscribe((msg) => {
+          assert(putSpy.getCalls().length === 3)
+          assert.deepEqual(msg, inputOutputMsg)
+          done()
+        }, (err) => done(err))
+
+        scheduler.flush()
       })
     })
   })
