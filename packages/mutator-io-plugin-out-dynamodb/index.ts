@@ -1,5 +1,5 @@
 import * as AwsDynamoDB from 'aws-sdk/clients/dynamodb'
-import { Observable, Observer, ReplaySubject, TestScheduler } from 'rxjs'
+import { Observable, Observer } from 'rxjs'
 import { OutputStream } from 'mutator-io'
 
 declare global {
@@ -16,7 +16,7 @@ class DynamoDB implements OutputStream {
   }
 
   create () {
-    return (msg: DynamoDB.Message, scheduler: TestScheduler) => {
+    return (msg: DynamoDB.Message, scheduler) => {
       return Observable.of(msg)
         .flatMap((msg: DynamoDB.Message) => {
           if (!msg) {
