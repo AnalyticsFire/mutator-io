@@ -137,7 +137,11 @@ describe('Output - DynamoDB', () => {
       })
       it('Fires an error if after N delayed retries it still fails', (done) => {
         const error = new Error('put error message')
-        const retryDelay = (msg) => Rx.Observable.of(100)
+        const retryDelaySpy = global.sandbox.spy()
+        const retryDelay = (msg) => {
+          retryDelaySpy(msg)
+          return Rx.Observable.of(100)
+        }
         const inputOutputMsg = {
           ...examplePutObj,
           retry: 4,
@@ -159,6 +163,7 @@ describe('Output - DynamoDB', () => {
           (msg) => done('Message received, expected error'),
           (err: Error) => {
             try {
+              assert.equal(retryDelaySpy.getCalls().length, 4)
               assert.equal(err.message, 'Operation failed after 4 attempts')
               done()
             } catch (err) {

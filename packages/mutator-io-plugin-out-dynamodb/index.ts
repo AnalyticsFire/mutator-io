@@ -45,26 +45,28 @@ class DynamoDB implements OutputStream {
 
         if (msg.retry) {
           awsOperationStream = awsOperationStream.retryWhen(error => {
-            const retryDelay = msg.retryDelay || (() => Observable.of(0))
-            let delayStream = retryDelay.call(this, error)
+            return error
+              .do(err => console.error(err))
+              .scan((acc, err) => acc + 1, 0)
+              .flatMap((errorCount) => {
+                const retryDelay = msg.retryDelay || (() => Observable.of(0))
+                let delayStream = retryDelay.call(this, msg)
 
-            if (!(delayStream && delayStream[Symbol.observable])) {
-              console.warn('retryDelay should return a valid Observable')
-              delayStream = Observable.of(0)
-            }
-            return delayStream.first().flatMap(delay =>
-              error
-                .do(err => console.error(err))
-                .scan((acc, err) => acc + 1, 0)
-                .flatMap(count => {
-                  if (count > (msg.retry - 1)) {
-                    return Observable.throw(
-                      new Error(`Operation failed after ${msg.retry} attempts`)
-                    )
-                  }
-                  return Observable.of(count).delay(delay, scheduler)
-                })
-            )
+                if (!(delayStream && delayStream[Symbol.observable])) {
+                  console.warn('retryDelay should return a valid Observable')
+                  delayStream = Observable.of(0)
+                }
+
+                return delayStream.first().map((delay) => [errorCount, delay])
+              })
+              .flatMap(([count, delay]) => {
+                if (count > (msg.retry - 1)) {
+                  return Observable.throw(
+                    new Error(`Operation failed after ${msg.retry} attempts`)
+                  )
+                }
+                return Observable.of(count).delay(delay, scheduler)
+              })
           })
         }
 
