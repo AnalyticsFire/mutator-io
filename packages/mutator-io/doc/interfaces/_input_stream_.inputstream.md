@@ -16,7 +16,7 @@
 
 
 
-*Defined in input-stream.ts:4*
+*Defined in [input-stream.ts:4](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/input-stream.ts#L4)*
 
 
 

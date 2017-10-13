@@ -32,7 +32,7 @@
 ### ⊕ **new Subscription**(mutatorInstance: *[MutatorIO](_mutator_io_.mutatorio.md)*, pipeName: *`string`*, transformIndex: *`number`*): [Subscription](_subscription_.subscription.md)
 
 
-*Defined in subscription.ts:10*
+*Defined in [subscription.ts:10](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/subscription.ts#L10)*
 
 
 
@@ -60,7 +60,7 @@
 
 **●  disposable**:  *`RxjsSubscription`* 
 
-*Defined in subscription.ts:10*
+*Defined in [subscription.ts:10](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/subscription.ts#L10)*
 
 
 
@@ -74,7 +74,7 @@ ___
 
 **●  id**:  *`string`* 
 
-*Defined in subscription.ts:8*
+*Defined in [subscription.ts:8](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/subscription.ts#L8)*
 
 
 
@@ -88,7 +88,7 @@ ___
 
 **●  stream**:  *`Observable`.<`any`>* 
 
-*Defined in subscription.ts:9*
+*Defined in [subscription.ts:9](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/subscription.ts#L9)*
 
 
 
@@ -106,7 +106,7 @@ ___
 
 
 
-*Defined in subscription.ts:20*
+*Defined in [subscription.ts:20](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/subscription.ts#L20)*
 
 
 

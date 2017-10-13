@@ -12,7 +12,7 @@
 
 **●  in**:  *[InputStream](_input_stream_.inputstream.md)`any`* 
 
-*Defined in mutator-io.ts:106*
+*Defined in [mutator-io.ts:116](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/mutator-io.ts#L116)*
 
 
 
@@ -26,7 +26,7 @@ ___
 
 **●  name**:  *`string`* 
 
-*Defined in mutator-io.ts:105*
+*Defined in [mutator-io.ts:115](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/mutator-io.ts#L115)*
 
 
 
@@ -40,7 +40,7 @@ ___
 
 **●  out**:  *[OutputStream](_output_stream_.outputstream.md)* 
 
-*Defined in mutator-io.ts:107*
+*Defined in [mutator-io.ts:117](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/mutator-io.ts#L117)*
 
 
 

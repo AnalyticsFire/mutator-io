@@ -48,7 +48,7 @@
 ### ⊕ **new MutatorIO**(pipes: *`Array`.<[Pipe](../interfaces/_mutator_io_.mutatorio.pipe.md)>*, config?: *[Config](../interfaces/_mutator_io_.mutatorio.config.md)*): [MutatorIO](_mutator_io_.mutatorio.md)
 
 
-*Defined in mutator-io.ts:23*
+*Defined in [mutator-io.ts:23](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/mutator-io.ts#L23)*
 
 
 
@@ -75,7 +75,7 @@
 
 **●  config**:  *[Config](../interfaces/_mutator_io_.mutatorio.config.md)* 
 
-*Defined in mutator-io.ts:25*
+*Defined in [mutator-io.ts:27](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/mutator-io.ts#L27)*
 
 
 
@@ -89,7 +89,7 @@ ___
 
 **●  pipes**:  *`Array`.<[Pipe](../interfaces/_mutator_io_.mutatorio.pipe.md)>* 
 
-*Defined in mutator-io.ts:25*
+*Defined in [mutator-io.ts:26](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/mutator-io.ts#L26)*
 
 
 
@@ -103,7 +103,7 @@ ___
 
 **●  subscriptions**:  *[Subscriptions](../interfaces/_mutator_io_.mutatorio.subscriptions.md)* 
 
-*Defined in mutator-io.ts:18*
+*Defined in [mutator-io.ts:18](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/mutator-io.ts#L18)*
 
 
 
@@ -117,7 +117,7 @@ ___
 
 **●  transformers**:  *[Transformers](../interfaces/_mutator_io_.mutatorio.transformers.md)* 
 
-*Defined in mutator-io.ts:17*
+*Defined in [mutator-io.ts:17](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/mutator-io.ts#L17)*
 
 
 
@@ -135,7 +135,7 @@ ___
 
 
 
-*Defined in mutator-io.ts:34*
+*Defined in [mutator-io.ts:37](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/mutator-io.ts#L37)*
 
 
 
@@ -166,7 +166,7 @@ ___
 
 
 
-*Defined in mutator-io.ts:83*
+*Defined in [mutator-io.ts:93](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/mutator-io.ts#L93)*
 
 
 
@@ -188,7 +188,7 @@ ___
 
 
 
-*Defined in mutator-io.ts:42*
+*Defined in [mutator-io.ts:45](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/mutator-io.ts#L45)*
 
 
 
@@ -223,7 +223,7 @@ ___
 
 **●  COLORS**:  *`boolean`*  = true
 
-*Defined in mutator-io.ts:22*
+*Defined in [mutator-io.ts:22](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/mutator-io.ts#L22)*
 
 
 
@@ -236,7 +236,7 @@ ___
 
 **●  LOG_LEVEL**:  *`string`*  = "INFO"
 
-*Defined in mutator-io.ts:21*
+*Defined in [mutator-io.ts:21](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/mutator-io.ts#L21)*
 
 
 

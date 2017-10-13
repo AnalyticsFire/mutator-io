@@ -6,6 +6,11 @@
 
 ## Index
 
+### Modules
+
+* [__global](_index_.__global.md)
+
+
 ### Classes
 
 * [DynamoDB](../classes/_index_.dynamodb.md)

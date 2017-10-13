@@ -14,7 +14,7 @@
 
 
 
-*Defined in output-stream.ts:8*
+*Defined in [output-stream.ts:9](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/output-stream.ts#L9)*
 
 
 

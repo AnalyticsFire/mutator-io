@@ -435,7 +435,7 @@ ___
 
 **●  topics**:  *`string`[]* 
 
-*Defined in index.ts:77*
+*Defined in [index.ts:74](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-in-mqtt/index.ts#L74)*
 
 
 

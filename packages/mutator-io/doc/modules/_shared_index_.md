@@ -27,7 +27,7 @@
 
 
 
-*Defined in shared/index.ts:9*
+*Defined in [shared/index.ts:9](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/shared/index.ts#L9)*
 
 
 

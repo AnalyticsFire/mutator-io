@@ -9,7 +9,7 @@
 
 
 
-*Defined in transform-stream.ts:3*
+*Defined in [transform-stream.ts:3](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/transform-stream.ts#L3)*
 
 
 
@@ -36,7 +36,7 @@
 
 **●  subscriptionId**:  *`string`* 
 
-*Defined in transform-stream.ts:5*
+*Defined in [transform-stream.ts:5](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/transform-stream.ts#L5)*
 
 
 

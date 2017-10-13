@@ -28,7 +28,7 @@
 
 **●  0**:  *`string`* 
 
-*Defined in mutator-io.ts:11*
+*Defined in [mutator-io.ts:11](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/mutator-io.ts#L11)*
 
 
 
@@ -42,7 +42,7 @@ ___
 
 **●  1**:  *`Observable`.<`Object`>* 
 
-*Defined in mutator-io.ts:12*
+*Defined in [mutator-io.ts:12](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/mutator-io.ts#L12)*
 
 
 
@@ -56,7 +56,7 @@ ___
 
 **●  2**:  *[Subscription](../classes/_subscription_.subscription.md)* 
 
-*Defined in mutator-io.ts:13*
+*Defined in [mutator-io.ts:13](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/mutator-io.ts#L13)*
 
 
 

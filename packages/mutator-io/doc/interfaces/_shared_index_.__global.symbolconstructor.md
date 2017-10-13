@@ -12,7 +12,7 @@
 
 **●  observable**:  *`symbol`* 
 
-*Defined in shared/index.ts:5*
+*Defined in [shared/index.ts:5](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/shared/index.ts#L5)*
 
 
 

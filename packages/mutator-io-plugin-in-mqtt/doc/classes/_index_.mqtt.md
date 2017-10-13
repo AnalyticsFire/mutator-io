@@ -6,7 +6,7 @@
 
 ## Implements
 
-* `any`
+* `InputStream`.<[Message](../interfaces/_index_.mqtt.message.md)>
 
 ## Index
 
@@ -42,7 +42,7 @@
 ### ⊕ **new Mqtt**(config: *[Config](../interfaces/_index_.mqtt.config.md)*): [Mqtt](_index_.mqtt.md)
 
 
-*Defined in index.ts:9*
+*Defined in [index.ts:9](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-in-mqtt/index.ts#L9)*
 
 
 
@@ -68,7 +68,7 @@
 
 **●  client**:  *`MqttClient`* 
 
-*Defined in index.ts:7*
+*Defined in [index.ts:7](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-in-mqtt/index.ts#L7)*
 
 
 
@@ -82,7 +82,7 @@ ___
 
 **●  clientObs**:  *`Observable`.<`MqttClient`>* 
 
-*Defined in index.ts:8*
+*Defined in [index.ts:8](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-in-mqtt/index.ts#L8)*
 
 
 
@@ -96,7 +96,7 @@ ___
 
 **●  topics**:  *`string`[]* 
 
-*Defined in index.ts:9*
+*Defined in [index.ts:9](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-in-mqtt/index.ts#L9)*
 
 
 
@@ -114,7 +114,7 @@ ___
 
 
 
-*Defined in index.ts:38*
+*Defined in [index.ts:38](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-in-mqtt/index.ts#L38)*
 
 
 

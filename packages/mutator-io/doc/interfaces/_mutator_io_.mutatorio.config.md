@@ -12,7 +12,7 @@
 
 **●  COLORS**:  *`boolean`* 
 
-*Defined in mutator-io.ts:119*
+*Defined in [mutator-io.ts:129](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/mutator-io.ts#L129)*
 
 
 
@@ -26,7 +26,7 @@ ___
 
 **●  LOG_LEVEL**:  *"NONE"⎮"INFO"⎮"DEBUG"* 
 
-*Defined in mutator-io.ts:120*
+*Defined in [mutator-io.ts:130](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io/src/mutator-io.ts#L130)*
 
 
 

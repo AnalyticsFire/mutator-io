@@ -6,7 +6,7 @@
 
 ## Implements
 
-* `any`
+* `OutputStream`
 
 ## Index
 
@@ -19,6 +19,7 @@
 
 * [Config](../interfaces/_index_.dynamodb.config.md)
 * [Message](../interfaces/_index_.dynamodb.message.md)
+* [RetryDelay](../interfaces/_index_.dynamodb.retrydelay.md)
 
 
 ### Constructors
@@ -45,7 +46,7 @@
 ### ⊕ **new DynamoDB**(config?: *[Config](../interfaces/_index_.dynamodb.config.md)*): [DynamoDB](_index_.dynamodb.md)
 
 
-*Defined in index.ts:6*
+*Defined in [index.ts:12](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L12)*
 
 
 
@@ -71,7 +72,7 @@
 
 **●  client**:  *`DocumentClient`* 
 
-*Defined in index.ts:6*
+*Defined in [index.ts:12](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L12)*
 
 
 
@@ -89,7 +90,7 @@ ___
 
 
 
-*Defined in index.ts:12*
+*Defined in [index.ts:18](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L18)*
 
 
 
