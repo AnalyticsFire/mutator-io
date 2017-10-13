@@ -9,7 +9,7 @@ export class Subscription {
   stream: Observable<any>
   disposable: RxjsSubscription
 
-  constructor (
+  constructor(
     private mutatorInstance: MutatorIO,
     private pipeName: string,
     private transformIndex: number
@@ -17,9 +17,12 @@ export class Subscription {
     this.id = uuidv1()
   }
 
-  unsubscribe (): void {
+  unsubscribe(): void {
     this.mutatorInstance.removeTransformer(this.pipeName, this.transformIndex)
     this.disposable.unsubscribe()
-    logger.info(`${c.rainbow('•••')} ${this.pipeName} pipe closed (unsubscribed) ${c.rainbow('•••')}`)
+    logger.info(
+      `${c.rainbow('•••')} ${this
+        .pipeName} pipe closed (unsubscribed) ${c.rainbow('•••')}`
+    )
   }
 }

@@ -14,16 +14,15 @@ describe('Input - Mqtt', () => {
 
   beforeEach(() => {
     subscribeSpy = global.sandbox.spy()
-    MqttClientEventEmitter = Object.assign({},
-      events.EventEmitter.prototype,
-      { subscribe: subscribeSpy }
-    )
+    MqttClientEventEmitter = Object.assign({}, events.EventEmitter.prototype, {
+      subscribe: subscribeSpy
+    })
     MqttClientMock = {
-      connect: (opts) => MqttClientEventEmitter
+      connect: opts => MqttClientEventEmitter
     }
 
     const Mqtt = proxyquire('.', {
-      'mqtt': MqttClientMock
+      mqtt: MqttClientMock
     })
 
     mqttInstance = new Mqtt({
@@ -32,9 +31,7 @@ describe('Input - Mqtt', () => {
   })
 
   it('starts the stream and subscribes to topics when the client connects', () => {
-    mqttInstance
-      .create()
-      .subscribe()
+    mqttInstance.create().subscribe()
 
     assert(!subscribeSpy.called)
 
@@ -46,7 +43,7 @@ describe('Input - Mqtt', () => {
     assert(subscribeSpy.getCall(0).args[1] instanceof Function)
   })
 
-  it('pipes the mqtt client messages out of the stream when the client connects', (done) => {
+  it('pipes the mqtt client messages out of the stream when the client connects', done => {
     const exampleValue = { some: 'example', val: [1, 2, 3] }
     const expectedValue = {
       topic: exampleTopics[0],
@@ -70,13 +67,14 @@ describe('Input - Mqtt', () => {
     callback1()
     callback2()
 
-    MqttClientEventEmitter.emit('message',
+    MqttClientEventEmitter.emit(
+      'message',
       exampleTopics[0],
       JSON.stringify(exampleValue)
     )
   })
 
-  it('works if the message is not a valid JSON', (done) => {
+  it('works if the message is not a valid JSON', done => {
     const exampleValue = { some: 'example', val: [1, 2, 3] }
     const expectedValue = {
       topic: exampleTopics[0],
@@ -100,35 +98,38 @@ describe('Input - Mqtt', () => {
     callback1()
     callback2()
 
-    MqttClientEventEmitter.emit('message',
+    MqttClientEventEmitter.emit(
+      'message',
       exampleTopics[0],
       JSON.stringify(exampleValue).slice(0, -1)
     )
   })
 
   describe('Error handling', () => {
-    it('outputs an error in the error stream callback when the client cannot connect', (done) => {
+    it('outputs an error in the error stream callback when the client cannot connect', done => {
       const errorMsg = 'my error'
-      mqttInstance
-        .create()
-        .subscribe(() => { }, (err) => {
+      mqttInstance.create().subscribe(
+        () => {},
+        err => {
           assert(err === errorMsg)
           done()
-        })
+        }
+      )
 
       assert(!subscribeSpy.called)
       MqttClientEventEmitter.emit('error', errorMsg)
       assert(!subscribeSpy.called)
     })
 
-    it('outputs an error in the error stream callback when the client cannot subscribe', (done) => {
+    it('outputs an error in the error stream callback when the client cannot subscribe', done => {
       const errorMsg = 'my subscribe error'
-      mqttInstance
-        .create()
-        .subscribe(() => {}, (err) => {
+      mqttInstance.create().subscribe(
+        () => {},
+        err => {
           assert(err === errorMsg)
           done()
-        })
+        }
+      )
 
       assert(!subscribeSpy.called)
       MqttClientEventEmitter.emit('connect')

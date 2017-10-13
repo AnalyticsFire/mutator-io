@@ -17,10 +17,16 @@ describe('Output - DynamoDB', () => {
     updateSpy = global.sandbox.spy()
 
     class DocumentClientMock {
-      constructor (config) { }
-      put (...args) { putSpy.apply(this, args) }
-      delete (...args) { deleteSpy.apply(this, args) }
-      update (...args) { updateSpy.apply(this, args) }
+      constructor(config) {}
+      put(...args) {
+        putSpy.apply(this, args)
+      }
+      delete(...args) {
+        deleteSpy.apply(this, args)
+      }
+      update(...args) {
+        updateSpy.apply(this, args)
+      }
     }
 
     AwsDynamoDBMock = {
@@ -31,7 +37,7 @@ describe('Output - DynamoDB', () => {
       'aws-sdk/clients/dynamodb': AwsDynamoDBMock
     })
 
-    outStreamInput = (new DynamoDBMock()).create()
+    outStreamInput = new DynamoDBMock().create()
   })
 
   describe('PUT operation', () => {
@@ -44,9 +50,10 @@ describe('Output - DynamoDB', () => {
       params: exampleParams
     } as DynamoDB.Message
 
-    it('performs a put call on aws if we pass a PUT Message', (done) => {
-      outStreamInput(examplePutObj)
-        .subscribe(...global.baseSubscriber(examplePutObj, done))
+    it('performs a put call on aws if we pass a PUT Message', done => {
+      outStreamInput(examplePutObj).subscribe(
+        ...global.baseSubscriber(examplePutObj, done)
+      )
 
       assert(putSpy.called)
       assert(putSpy.getCalls().length === 1)
@@ -59,14 +66,16 @@ describe('Output - DynamoDB', () => {
     })
 
     describe('Error handling', () => {
-      it('outputs an error if the aws call failed', (done) => {
+      it('outputs an error if the aws call failed', done => {
         const error = new Error('put error message')
 
-        outStreamInput(examplePutObj)
-          .subscribe(() => { }, (err) => {
+        outStreamInput(examplePutObj).subscribe(
+          () => {},
+          err => {
             assert.deepEqual(err, error)
             done()
-          })
+          }
+        )
 
         assert(putSpy.called)
         assert(putSpy.getCalls().length === 1)
@@ -77,9 +86,12 @@ describe('Output - DynamoDB', () => {
 
         callback(error, {})
       })
-      it('retries N times if we add "retry" parameter in the message', (done) => {
+      it('retries N times if we add "retry" parameter in the message', done => {
         const error = new Error('put error message')
-        const inputOutputMsg = { ...examplePutObj, retry: 3 } as DynamoDB.Message
+        const inputOutputMsg = {
+          ...examplePutObj,
+          retry: 3
+        } as DynamoDB.Message
 
         const scheduler = new Rx.TestScheduler(() => true)
 
@@ -92,7 +104,7 @@ describe('Output - DynamoDB', () => {
         putSpy.onCall(2).callsArgWith(1, null, {})
 
         test.subscribe(
-          (msg) => {
+          msg => {
             try {
               assert.deepEqual(msg, inputOutputMsg)
               assert(putSpy.getCalls().length === 3)
@@ -101,13 +113,13 @@ describe('Output - DynamoDB', () => {
               done(err)
             }
           },
-          (err) => done(err)
+          err => done(err)
         )
         scheduler.flush()
       })
-      it('retries N times if we add "retry" parameter in the message w/ "retryWhen" backpressure times', (done) => {
+      it('retries N times if we add "retry" parameter in the message w/ "retryWhen" backpressure times', done => {
         const error = new Error('put error message')
-        const retryDelay = (msg) => Rx.Observable.of(100, 300)
+        const retryDelay = msg => Rx.Observable.of(100, 300)
         const inputOutputMsg = {
           ...examplePutObj,
           retry: 3,
@@ -128,17 +140,15 @@ describe('Output - DynamoDB', () => {
         putSpy.onCall(2).callsArgWith(1, null, {})
 
         // At the 200th "frame" (100ms delayed retry * 2), expect a value and complete
-        scheduler
-          .expectObservable(test)
-          .toBe('--------------------(a|)', {
-            a: inputOutputMsg
-          })
+        scheduler.expectObservable(test).toBe('--------------------(a|)', {
+          a: inputOutputMsg
+        })
         scheduler.flush()
       })
-      it('Fires an error if after N delayed retries it still fails', (done) => {
+      it('Fires an error if after N delayed retries it still fails', done => {
         const error = new Error('put error message')
         const retryDelaySpy = global.sandbox.spy()
-        const retryDelay = (msg) => {
+        const retryDelay = msg => {
           retryDelaySpy(msg)
           return Rx.Observable.of(100)
         }
@@ -160,7 +170,7 @@ describe('Output - DynamoDB', () => {
         putSpy.onCall(3).callsArgWith(1, error, {})
 
         test.subscribe(
-          (msg) => done('Message received, expected error'),
+          msg => done('Message received, expected error'),
           (err: Error) => {
             try {
               assert.equal(retryDelaySpy.getCalls().length, 4)
@@ -187,9 +197,10 @@ describe('Output - DynamoDB', () => {
       params: exampleParams
     } as DynamoDB.Message
 
-    it('performs a delete call on aws if we pass a DELETE Message', (done) => {
-      outStreamInput(exampleDeleteObj)
-        .subscribe(...global.baseSubscriber(exampleDeleteObj, done))
+    it('performs a delete call on aws if we pass a DELETE Message', done => {
+      outStreamInput(exampleDeleteObj).subscribe(
+        ...global.baseSubscriber(exampleDeleteObj, done)
+      )
 
       assert(deleteSpy.called)
       assert(deleteSpy.getCalls().length === 1)
@@ -202,14 +213,16 @@ describe('Output - DynamoDB', () => {
     })
 
     describe('Error handling', () => {
-      it('outputs an error if the aws call failed', (done) => {
+      it('outputs an error if the aws call failed', done => {
         const error = new Error('put error message')
 
-        outStreamInput(exampleDeleteObj)
-          .subscribe(() => { }, (err) => {
+        outStreamInput(exampleDeleteObj).subscribe(
+          () => {},
+          err => {
             assert.deepEqual(err, error)
             done()
-          })
+          }
+        )
 
         assert(deleteSpy.called)
         assert(deleteSpy.getCalls().length === 1)
@@ -233,9 +246,10 @@ describe('Output - DynamoDB', () => {
       params: exampleParams
     } as DynamoDB.Message
 
-    it('performs an update call on aws if we pass an UPDATE Message', (done) => {
-      outStreamInput(exampleUpdateObj)
-        .subscribe(...global.baseSubscriber(exampleUpdateObj, done))
+    it('performs an update call on aws if we pass an UPDATE Message', done => {
+      outStreamInput(exampleUpdateObj).subscribe(
+        ...global.baseSubscriber(exampleUpdateObj, done)
+      )
 
       assert(updateSpy.called)
       assert(updateSpy.getCalls().length === 1)
@@ -248,14 +262,16 @@ describe('Output - DynamoDB', () => {
     })
 
     describe('Error handling', () => {
-      it('outputs an error if the aws call failed', (done) => {
+      it('outputs an error if the aws call failed', done => {
         const error = new Error('put error message')
 
-        outStreamInput(exampleUpdateObj)
-          .subscribe(() => { }, (err) => {
+        outStreamInput(exampleUpdateObj).subscribe(
+          () => {},
+          err => {
             assert.deepEqual(err, error)
             done()
-          })
+          }
+        )
 
         assert(updateSpy.called)
         assert(updateSpy.getCalls().length === 1)
