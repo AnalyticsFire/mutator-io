@@ -127,6 +127,7 @@ describe('Output - DynamoDB', () => {
         putSpy.onCall(1).callsArgWith(1, error, {})
         putSpy.onCall(2).callsArgWith(1, null, {})
 
+        // At the 200th "frame" (100ms delayed retry * 2), expect a value and complete
         scheduler
           .expectObservable(test)
           .toBe('--------------------(a|)', {
