@@ -83,11 +83,15 @@ namespace DynamoDB {
     UPDATE = 'update',
   }
 
+  export interface RetryDelay {
+    (msg: any): Observable<number>
+  }
+
   export interface Message {
     operation: Operations
     params: Object
     retry?: number
-    retryDelay?: Function
+    retryDelay?: RetryDelay
   }
 
   export interface Config
