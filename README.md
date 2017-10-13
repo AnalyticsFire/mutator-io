@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/AnalyticsFire/mutator-io.svg?branch=master)](https://travis-ci.org/AnalyticsFire/mutator-io)
 [![NPM version](https://badge.fury.io/js/mutator-io.svg)](https://badge.fury.io/js/mutator-io)
 [![Standard JS](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![TypeScript](https://cdn.rawgit.com/ellerbrock/typescript-badges/6e8282b8/badges/version/typescript-v2.4.svg)](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-4.html)
 
 Mutator I/O is a tiny library to handle data [transformations](doc/transform-streams/transform-streams.md). It uses [RxJS](https://github.com/Reactive-Extensions/RxJS) to compose streams of data from a source (inputStream) to a destination (outputStream)

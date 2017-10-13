@@ -1,5 +1,8 @@
 {
-  "extends": "standard",
+  "extends": [
+    "prettier",
+    "prettier/standard"
+  ],
   "env": {
     "node": true,
     "es6": true
@@ -12,12 +15,20 @@
     }
   },
   "plugins": [
-    "typescript"
+    "typescript",
+    "prettier"
   ],
   "rules": {
     "no-undef": "off",
     "no-unused-vars": "off",
     "no-useless-constructor": "off",
-    "new-cap": "off"
+    "new-cap": "off",
+    "prettier/prettier": [
+      "error", {
+        "singleQuote": true,
+        "semi": false,
+        "parser": "typescript"
+      }
+    ]
   }
 }
