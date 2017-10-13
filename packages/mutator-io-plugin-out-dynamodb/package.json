@@ -1,6 +1,6 @@
 {
   "name": "mutator-io-plugin-out-dynamodb",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Output stream plugin for mutator-io to interface with DynamoDB",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.108.0",
-    "mutator-io": "^0.2.0",
+    "mutator-io": "^0.2.1",
     "rxjs": "5.4.2"
   },
   "directories": {
