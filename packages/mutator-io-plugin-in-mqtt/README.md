@@ -22,7 +22,9 @@ interface Config extends IClientOptions {
 This kind of security is supported just like it is in MQTT.js (though there aren't many examples around)
 
 ```typescript
-const myInputStream = new inputStreams.Mqtt({
+import * as MqttInputStream from 'mutator-io-plugin-in-mqtt'
+
+const myInputStream = new MqttInputStream({
   protocol: 'mqtts',
   host: 'my-endpoint.iot.eu-central-1.amazonaws.com',
   port: 8883,
@@ -32,6 +34,6 @@ const myInputStream = new inputStreams.Mqtt({
   requestCert: true,
   rejectUnauthorized: true,
   topics: ['something/+/+/+/status/+/+/+']
-})
+} as MqttInputStream.Config)
 ```
 ## [Typescript documentation](doc/README.md)

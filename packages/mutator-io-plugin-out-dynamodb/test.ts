@@ -1,3 +1,4 @@
+import * as Rx from 'rxjs'
 import * as assert from 'assert'
 import * as proxyquire from 'proxyquire'
 import * as sinon from 'sinon'
@@ -11,7 +12,7 @@ describe('Output - DynamoDB', () => {
   let AwsDynamoDBMock
 
   beforeEach(() => {
-    putSpy = global.sandbox.spy()
+    putSpy = global.sandbox.stub()
     deleteSpy = global.sandbox.spy()
     updateSpy = global.sandbox.spy()
 
@@ -75,6 +76,103 @@ describe('Output - DynamoDB', () => {
         assert(callback instanceof Function)
 
         callback(error, {})
+      })
+      it('retries N times if we add "retry" parameter in the message', (done) => {
+        const error = new Error('put error message')
+        const inputOutputMsg = { ...examplePutObj, retry: 3 } as DynamoDB.Message
+
+        const scheduler = new Rx.TestScheduler(() => true)
+
+        const test = outStreamInput(inputOutputMsg, scheduler)
+
+        global.sandbox.stub(console, 'error')
+
+        putSpy.onCall(0).callsArgWith(1, error, {})
+        putSpy.onCall(1).callsArgWith(1, error, {})
+        putSpy.onCall(2).callsArgWith(1, null, {})
+
+        test.subscribe(
+          (msg) => {
+            try {
+              assert.deepEqual(msg, inputOutputMsg)
+              assert(putSpy.getCalls().length === 3)
+              done()
+            } catch (err) {
+              done(err)
+            }
+          },
+          (err) => done(err)
+        )
+        scheduler.flush()
+      })
+      it('retries N times if we add "retry" parameter in the message w/ "retryWhen" backpressure times', (done) => {
+        const error = new Error('put error message')
+        const retryDelay = (msg) => Rx.Observable.of(100, 300)
+        const inputOutputMsg = {
+          ...examplePutObj,
+          retry: 3,
+          retryDelay
+        } as DynamoDB.Message
+
+        const scheduler = new Rx.TestScheduler((a, b) => {
+          assert.deepEqual(a, b)
+          done()
+        })
+
+        const test = outStreamInput(inputOutputMsg, scheduler)
+
+        global.sandbox.stub(console, 'error')
+
+        putSpy.onCall(0).callsArgWith(1, error, {})
+        putSpy.onCall(1).callsArgWith(1, error, {})
+        putSpy.onCall(2).callsArgWith(1, null, {})
+
+        // At the 200th "frame" (100ms delayed retry * 2), expect a value and complete
+        scheduler
+          .expectObservable(test)
+          .toBe('--------------------(a|)', {
+            a: inputOutputMsg
+          })
+        scheduler.flush()
+      })
+      it('Fires an error if after N delayed retries it still fails', (done) => {
+        const error = new Error('put error message')
+        const retryDelaySpy = global.sandbox.spy()
+        const retryDelay = (msg) => {
+          retryDelaySpy(msg)
+          return Rx.Observable.of(100)
+        }
+        const inputOutputMsg = {
+          ...examplePutObj,
+          retry: 4,
+          retryDelay
+        } as DynamoDB.Message
+
+        const scheduler = new Rx.TestScheduler(() => true)
+
+        const test = outStreamInput(inputOutputMsg, scheduler)
+
+        global.sandbox.stub(console, 'error')
+
+        putSpy.onCall(0).callsArgWith(1, error, {})
+        putSpy.onCall(1).callsArgWith(1, error, {})
+        putSpy.onCall(2).callsArgWith(1, error, {})
+        putSpy.onCall(3).callsArgWith(1, error, {})
+
+        test.subscribe(
+          (msg) => done('Message received, expected error'),
+          (err: Error) => {
+            try {
+              assert.equal(retryDelaySpy.getCalls().length, 4)
+              assert.equal(err.message, 'Operation failed after 4 attempts')
+              done()
+            } catch (err) {
+              done(err)
+            }
+          },
+          () => {}
+        )
+        scheduler.flush()
       })
     })
   })

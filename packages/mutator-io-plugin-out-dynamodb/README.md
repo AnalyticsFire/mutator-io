@@ -21,9 +21,15 @@ enum Operations {
   UPDATE = 'update'
 }
 
-interface Message {
+export interface RetryDelay {
+  (msg: any): Observable<number>
+}
+
+export interface Message {
   operation: Operations
   params: Object
+  retry?: number
+  retryDelay?: RetryDelay
 }
 ```
 
@@ -31,7 +37,9 @@ As long as the transformation returns an object shaped this way, this output str
 
 ### Transformation example:
 ```typescript
-mutatorIOInstance.transform('myPipeName', (msg): outputStreams.DynamoDB.Message => {
+import * as DynamoDBOutputStream from 'mutator-io-plugin-out-dynamodb'
+
+mutatorIOInstance.transform('myPipeName', (msg): DynamoDBOutputStream.Message => {
   const params = {
     TableName : 'test_table',
     Item: {
@@ -50,4 +58,8 @@ mutatorIOInstance.transform('myPipeName', (msg): outputStreams.DynamoDB.Message 
   }
 })
 ```
+
+You can optionally specify a `retry` parameter, which will make the output stream retry the write operation `N` times in case of failure.
+`retrDelay` optional parameter should be a function returning an observable (e.g. `(msg) => Rx.Observable.of(2000)`) - this will be called every time an error comes in, allowing the user to set dynamic delays between retries (e.g. based on something in the message, or perform more complex async operations to determine the delay to apply)
+
 ## [Typescript documentation](doc/README.md)
