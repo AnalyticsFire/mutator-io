@@ -16,7 +16,7 @@ describe('MutatorIO', () => {
     create: () => mockInput
   } as InputStream<any>
   const mockOutputStream = {
-    create: () => (msg) => Observable.of(msg + 'output add')
+    create: () => msg => Observable.of(msg + 'output add')
   } as OutputStream
 
   const MutatorIOMock = proxyquire('../src/mutator-io', {
@@ -30,15 +30,18 @@ describe('MutatorIO', () => {
   beforeEach(() => {
     mockInput = new Subject()
     loggerSpy = global.sandbox.spy(logger, 'info')
-    mutatorIO = new MutatorIOMock([
+    mutatorIO = new MutatorIOMock(
+      [
+        {
+          name: 'custom-pipe1',
+          in: mockInputStream,
+          out: mockOutputStream
+        }
+      ] as Array<MutatorIO.Pipe>,
       {
-        name: 'custom-pipe1',
-        in: mockInputStream,
-        out: mockOutputStream
+        LOG_LEVEL: 'NONE'
       }
-    ] as Array<MutatorIO.Pipe>, {
-      LOG_LEVEL: 'NONE'
-    })
+    )
   })
 
   it('adds a transformer to the list and returns a subscription item', () => {
@@ -48,8 +51,11 @@ describe('MutatorIO', () => {
   })
 
   it('composes a stream made from input + transform + output', () => {
-    const transformStream = (msg) => msg + ' transform add '
-    const sub = mutatorIO.transform('custom-pipe1', transformStream as TransformStream)
+    const transformStream = msg => msg + ' transform add '
+    const sub = mutatorIO.transform(
+      'custom-pipe1',
+      transformStream as TransformStream
+    )
 
     mutatorIO.start()
     mockInput.next('input add')
@@ -68,14 +74,20 @@ describe('MutatorIO', () => {
 
   describe('Subscription', () => {
     it('contains a unique ID', () => {
-      const transformStream = (msg) => msg + ' transform add '
-      const sub = mutatorIO.transform('custom-pipe1', transformStream as TransformStream)
+      const transformStream = msg => msg + ' transform add '
+      const sub = mutatorIO.transform(
+        'custom-pipe1',
+        transformStream as TransformStream
+      )
       assert(sub.id.length === 36)
     })
 
     it('calling unsubscribe stops the related stream', () => {
-      const transformStream = (msg) => msg + ' transform add '
-      const sub = mutatorIO.transform('custom-pipe1', transformStream as TransformStream)
+      const transformStream = msg => msg + ' transform add '
+      const sub = mutatorIO.transform(
+        'custom-pipe1',
+        transformStream as TransformStream
+      )
 
       mutatorIO.start()
 

@@ -11,11 +11,11 @@ declare global {
 class DynamoDB implements OutputStream {
   client: AwsDynamoDB.DocumentClient
 
-  constructor (config: DynamoDB.Config = {}) {
+  constructor(config: DynamoDB.Config = {}) {
     this.client = new AwsDynamoDB.DocumentClient(config)
   }
 
-  create () {
+  create() {
     return (msg: DynamoDB.Message, scheduler) => {
       return Observable.of(msg).flatMap((msg: DynamoDB.Message) => {
         if (!msg) {
@@ -48,7 +48,7 @@ class DynamoDB implements OutputStream {
             return error
               .do(err => console.error(err))
               .scan((acc, err) => acc + 1, 0)
-              .flatMap((errorCount) => {
+              .flatMap(errorCount => {
                 const retryDelay = msg.retryDelay || (() => Observable.of(0))
                 let delayStream = retryDelay.call(this, msg)
 
@@ -57,10 +57,10 @@ class DynamoDB implements OutputStream {
                   delayStream = Observable.of(0)
                 }
 
-                return delayStream.first().map((delay) => [errorCount, delay])
+                return delayStream.first().map(delay => [errorCount, delay])
               })
               .flatMap(([count, delay]) => {
-                if (count > (msg.retry - 1)) {
+                if (count > msg.retry - 1) {
                   return Observable.throw(
                     new Error(`Operation failed after ${msg.retry} attempts`)
                   )
@@ -80,7 +80,7 @@ namespace DynamoDB {
   export enum Operations {
     PUT = 'put',
     DELETE = 'delete',
-    UPDATE = 'update',
+    UPDATE = 'update'
   }
 
   export interface RetryDelay {

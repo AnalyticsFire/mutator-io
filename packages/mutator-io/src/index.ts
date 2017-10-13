@@ -6,7 +6,4 @@ export { TransformStream } from './transform-stream'
 
 export { Subscription } from './subscription'
 
-export {
-  MutatorIO,
-  MutatorIO as default
-}
+export { MutatorIO, MutatorIO as default }

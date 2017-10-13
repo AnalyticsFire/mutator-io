@@ -3,7 +3,7 @@ import * as assert from 'assert'
 import * as sinon from 'sinon'
 
 declare global {
-  export module NodeJS {
+  export namespace NodeJS {
     interface Global {
       baseSubscriber(expected: any, done: Function): Array<Function>
       sandbox: any
@@ -12,7 +12,7 @@ declare global {
 }
 
 global.baseSubscriber = (expected, done) => [
-  (msg) => {
+  msg => {
     try {
       assert.deepEqual(msg, expected)
       done()
@@ -20,7 +20,7 @@ global.baseSubscriber = (expected, done) => [
       done(e)
     }
   },
-  (e) => done(new Error(e))
+  e => done(new Error(e))
 ]
 
 global.sandbox = sinon.sandbox.create()
