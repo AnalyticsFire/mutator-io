@@ -1,10 +1,10 @@
 import { Observable } from 'rxjs'
 import { IScheduler } from 'rxjs/Scheduler'
 
-export interface OutputStreamCreateMethod {
-  (msg: Object, scheduler?: IScheduler): Observable<any>
+export interface OutputStreamCreateMethod<T> {
+  (msg: T, scheduler?: IScheduler): any
 }
 
-export interface OutputStream {
-  create(): OutputStreamCreateMethod
+export interface OutputStream<T> {
+  create(): OutputStreamCreateMethod<T>
 }

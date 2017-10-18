@@ -8,7 +8,7 @@ declare global {
   }
 }
 
-class DynamoDB implements OutputStream {
+class DynamoDB implements OutputStream<DynamoDB.Message> {
   client: AwsDynamoDB.DocumentClient
 
   constructor(config: DynamoDB.Config = {}) {

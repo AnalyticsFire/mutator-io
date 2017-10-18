@@ -7,9 +7,9 @@ import { Subscription } from './subscription'
 import * as shared from './shared'
 import logger from './logger'
 
-interface pipeResult extends Array<Object> {
+interface pipeResult extends Array<any> {
   0: string
-  1: Observable<Object>
+  1: Observable<any>
   2: Subscription
 }
 
@@ -42,7 +42,7 @@ class MutatorIO {
     return true
   }
 
-  transform(pipeName: string, transform: TransformStream): Subscription {
+  transform(pipeName: string, transform: TransformStream<any>): Subscription {
     this.transformers[pipeName] = this.transformers[pipeName] || []
     const lastIndex = this.transformers[pipeName].push(transform) - 1
 
@@ -54,14 +54,15 @@ class MutatorIO {
 
   private composeStream(
     pipe: MutatorIO.Pipe,
-    transformer: TransformStream
+    transformer: TransformStream<any>
   ): pipeResult {
     const inStream = pipe.in.create()
     const outStream = pipe.out.create()
 
     return [
       pipe.name,
-      inStream
+      shared
+        .wrapToObservable(inStream)
         .do(msg => logger.debug(c.yellow('pre-transformation'), msg))
         .flatMap(msg => shared.wrapToObservable(transformer.call(this, msg)))
         .do(msg => logger.debug(c.yellow('post-transformation'), msg))
@@ -114,11 +115,11 @@ namespace MutatorIO {
   export interface Pipe {
     name: string
     in: InputStream<any>
-    out: OutputStream
+    out: OutputStream<any>
   }
 
   export interface Transformers {
-    [name: string]: Array<TransformStream>
+    [name: string]: Array<TransformStream<any>>
   }
 
   export interface Subscriptions {
