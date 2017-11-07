@@ -47,7 +47,7 @@ class Mqtt implements InputStream<Mqtt.Message> {
       })
       return Observable.forkJoin(observables).flatMap((): Observable<any> => {
         return Observable.create((observer: Observer<Mqtt.Message>) => {
-          const callback = (topic, payload) => {
+          let callback = (topic, payload) => {
             // TODO: Pipe buffer payload into a more performant JSON parser
             let parsedPayload = payload.toString()
             try {
@@ -57,7 +57,10 @@ class Mqtt implements InputStream<Mqtt.Message> {
           }
 
           client.on('message', callback)
-          return () => client.removeListener('message', callback)
+          return () => {
+            client.removeListener('message', callback)
+            callback = null
+          }
         })
       })
     })
