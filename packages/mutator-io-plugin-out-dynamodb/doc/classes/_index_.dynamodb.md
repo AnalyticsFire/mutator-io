@@ -18,6 +18,7 @@
 ### Interfaces
 
 * [Config](../interfaces/_index_.dynamodb.config.md)
+* [IgnorableError](../interfaces/_index_.dynamodb.ignorableerror.md)
 * [Message](../interfaces/_index_.dynamodb.message.md)
 * [RetryDelay](../interfaces/_index_.dynamodb.retrydelay.md)
 
@@ -130,11 +131,11 @@ ___
 ## Object literal: defaultConfig
 
 
-<a id="defaultconfig.ignore_error_codes"></a>
+<a id="defaultconfig.ignore_errors"></a>
 
-###  IGNORE_ERROR_CODES
+###  IGNORE_ERRORS
 
-**●  IGNORE_ERROR_CODES**:  *`undefined`[]*  =  []
+**●  IGNORE_ERRORS**:  *`undefined`[]*  =  []
 
 *Defined in [index.ts:15](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L15)*
 

@@ -22,7 +22,7 @@
 
 ** DELETE**:    = "delete"
 
-*Defined in [index.ts:94](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L94)*
+*Defined in [index.ts:99](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L99)*
 
 
 
@@ -36,7 +36,7 @@ ___
 
 ** PUT**:    = "put"
 
-*Defined in [index.ts:93](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L93)*
+*Defined in [index.ts:98](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L98)*
 
 
 
@@ -50,7 +50,7 @@ ___
 
 ** UPDATE**:    = "update"
 
-*Defined in [index.ts:95](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L95)*
+*Defined in [index.ts:100](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L100)*
 
 
 

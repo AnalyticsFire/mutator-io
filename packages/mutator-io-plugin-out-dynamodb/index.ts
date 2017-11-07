@@ -12,7 +12,7 @@ class DynamoDB implements OutputStream<DynamoDB.Message> {
   client: AwsDynamoDB.DocumentClient
 
   static defaultConfig: DynamoDB.Config = {
-    IGNORE_ERROR_CODES: []
+    IGNORE_ERRORS: []
   }
 
   constructor(public config: DynamoDB.Config = {}) {
@@ -39,11 +39,16 @@ class DynamoDB implements OutputStream<DynamoDB.Message> {
 
             let method = this.client[msg.operation]
             method.call(this.client, msg.params || {}, (error, data) => {
-              if (
-                error &&
-                (this.config.IGNORE_ERROR_CODES || []).indexOf(error.code) < 0
-              ) {
-                return observer.error(new Error(error))
+              if (error) {
+                const isIgnored = (this.config.IGNORE_ERRORS || []).find(
+                  (err: DynamoDB.IgnorableError) =>
+                    error.code === err.code &&
+                    (!error.message || error.message === err.message)
+                )
+
+                if (!isIgnored) {
+                  return observer.error(new Error(error))
+                }
               }
               observer.next(msg)
               observer.complete()
@@ -106,10 +111,15 @@ namespace DynamoDB {
     retryDelay?: RetryDelay
   }
 
+  export interface IgnorableError {
+    code: String
+    message?: String
+  }
+
   export interface Config
     extends AwsDynamoDB.Types.DocumentClient.DocumentClientOptions,
       AwsDynamoDB.Types.ClientConfiguration {
-    IGNORE_ERROR_CODES?: Array<String>
+    IGNORE_ERRORS?: Array<IgnorableError>
   }
 }
 

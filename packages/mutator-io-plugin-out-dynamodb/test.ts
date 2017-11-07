@@ -187,18 +187,21 @@ describe('Output - DynamoDB', () => {
         )
         scheduler.flush()
       })
-      it('Ignores errors if the error.code is specified in the config IGNORE_ERROR_CODES param', done => {
+      it('Ignores errors if the error.code is specified in the config IGNORE_ERRORS param', done => {
         const outStreamInput = new DynamoDBMock({
-          IGNORE_ERROR_CODES: [
-            'ConditionalCheckFailedException',
-            'ResourceNotFoundException'
+          IGNORE_ERRORS: [
+            { code: 'ConditionalCheckFailedException' },
+            {
+              code: 'ResourceNotFoundException',
+              message: 'Test specific message ignored'
+            }
           ]
         } as DynamoDB.Config).create()
 
         const expectedPutObjs = [examplePutObj, examplePutObj]
         const expectedException = {
-          code: 'Some exception',
-          toString: () => 'Error Message'
+          code: 'ResourceNotFoundException',
+          message: 'Error Message'
         }
 
         Rx.Observable
@@ -234,7 +237,8 @@ describe('Output - DynamoDB', () => {
         callback = putSpy.getCall(1).args[1]
         callback(
           {
-            code: 'ResourceNotFoundException'
+            code: 'ResourceNotFoundException',
+            message: 'Test specific message ignored'
           },
           {}
         )

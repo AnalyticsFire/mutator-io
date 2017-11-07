@@ -12,7 +12,7 @@
 
 **●  operation**:  *[Operations](../enums/_index_.dynamodb.operations.md)* 
 
-*Defined in [index.ts:103](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L103)*
+*Defined in [index.ts:108](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L108)*
 
 
 
@@ -26,7 +26,7 @@ ___
 
 **●  params**:  *`Object`* 
 
-*Defined in [index.ts:104](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L104)*
+*Defined in [index.ts:109](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L109)*
 
 
 
@@ -40,7 +40,7 @@ ___
 
 **●  retry**:  *`number`* 
 
-*Defined in [index.ts:105](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L105)*
+*Defined in [index.ts:110](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L110)*
 
 
 
@@ -54,7 +54,7 @@ ___
 
 **●  retryDelay**:  *[RetryDelay](_index_.dynamodb.retrydelay.md)* 
 
-*Defined in [index.ts:106](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L106)*
+*Defined in [index.ts:111](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L111)*
 
 
 

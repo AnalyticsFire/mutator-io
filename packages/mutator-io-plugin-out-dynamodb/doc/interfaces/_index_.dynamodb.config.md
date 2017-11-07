@@ -24,13 +24,13 @@
 
 
 ## Properties
-<a id="ignore_error_codes"></a>
+<a id="ignore_errors"></a>
 
-### «Optional» IGNORE_ERROR_CODES
+### «Optional» IGNORE_ERRORS
 
-**●  IGNORE_ERROR_CODES**:  *`Array`.<`String`>* 
+**●  IGNORE_ERRORS**:  *`Array`.<[IgnorableError](_index_.dynamodb.ignorableerror.md)>* 
 
-*Defined in [index.ts:112](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L112)*
+*Defined in [index.ts:122](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L122)*
 
 
 

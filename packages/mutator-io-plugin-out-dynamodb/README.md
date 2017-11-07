@@ -12,7 +12,18 @@ Ideally this should leverage Rx.js to perform fail-safe operations like batchWri
 
 The configuration required is [exactly the same of the original sdk](https://github.com/aws/aws-sdk-js/blob/master/lib/dynamodb/document_client.d.ts).
 
-There's an extra custom parameter called `IGNORE_ERROR_CODES` which is a list of error codes that we might want to ignore to avoid bloating the logs (e.g. `ConditionalCheckFailedException` might not be a "real" exception so we can ignore it).
+There's an extra custom parameter called `IGNORE_ERRORS` which is a list of error codes (and optionally message) that we might want to ignore to avoid bloating the logs.
+
+Here's an example:
+
+```typescript
+new DynamoDB({
+  IGNORE_ERRORS: [
+    { code: 'ConditionalCheckFailedException' },
+    { code: 'ValidationException', message: 'specific validation message' }
+  ]
+} as DynamoDB.Config)
+```
 
 The `create` method returns a function that accepts a custom `Message` type parameter.
 
@@ -23,11 +34,11 @@ enum Operations {
   UPDATE = 'update'
 }
 
-export interface RetryDelay {
+interface RetryDelay {
   (msg: any): Observable<number>
 }
 
-export interface Message {
+interface Message {
   operation: Operations
   params: Object
   retry?: number

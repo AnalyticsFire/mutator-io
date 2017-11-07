@@ -9,7 +9,7 @@
 
 
 
-*Defined in [index.ts:98](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L98)*
+*Defined in [index.ts:103](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L103)*
 
 
 
