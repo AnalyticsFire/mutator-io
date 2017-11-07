@@ -74,7 +74,7 @@ describe('Input - Mqtt', () => {
     )
   })
 
-  it('works if the message is not a valid JSON', done => {
+  it('handles the error if the message is not a valid JSON', done => {
     const exampleValue = { some: 'example', val: [1, 2, 3] }
     const expectedValue = {
       topic: exampleTopics[0],
@@ -102,6 +102,56 @@ describe('Input - Mqtt', () => {
       'message',
       exampleTopics[0],
       JSON.stringify(exampleValue).slice(0, -1)
+    )
+  })
+
+  it('keeps working if the message is not a valid JSON', done => {
+    const exampleValue = { some: 'example', val: [1, 2, 3] }
+    const expectedValues = [
+      {
+        topic: exampleTopics[0],
+        payload: '{"some":"example","val":[1,2,3]'
+      } as Mqtt.Message,
+      {
+        topic: exampleTopics[0],
+        payload: { some: 'example', val: [1, 2, 3] }
+      } as Mqtt.Message
+    ]
+
+    mqttInstance.create().subscribe(
+      msg => {
+        assert.deepEqual(msg, expectedValues.shift())
+
+        if (!expectedValues.length) {
+          done()
+        }
+      },
+      e => done(new Error(e))
+    )
+
+    assert(!subscribeSpy.called)
+
+    MqttClientEventEmitter.emit('connect')
+
+    assert(subscribeSpy.called)
+    assert(subscribeSpy.getCalls().length === 2)
+
+    const callback1 = subscribeSpy.getCall(0).args[1]
+    const callback2 = subscribeSpy.getCall(1).args[1]
+    // We need to call both callbacks to make forJoin happy
+    callback1()
+    callback2()
+
+    MqttClientEventEmitter.emit(
+      'message',
+      exampleTopics[0],
+      JSON.stringify(exampleValue).slice(0, -1)
+    )
+
+    MqttClientEventEmitter.emit(
+      'message',
+      exampleTopics[0],
+      JSON.stringify(exampleValue)
     )
   })
 

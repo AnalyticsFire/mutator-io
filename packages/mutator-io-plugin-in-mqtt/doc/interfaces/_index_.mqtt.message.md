@@ -12,7 +12,7 @@
 
 **●  payload**:  *`Object`* 
 
-*Defined in [index.ts:70](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-in-mqtt/index.ts#L70)*
+*Defined in [index.ts:73](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-in-mqtt/index.ts#L73)*
 
 
 
@@ -26,7 +26,7 @@ ___
 
 **●  topic**:  *`string`* 
 
-*Defined in [index.ts:69](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-in-mqtt/index.ts#L69)*
+*Defined in [index.ts:72](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-in-mqtt/index.ts#L72)*
 
 
 
