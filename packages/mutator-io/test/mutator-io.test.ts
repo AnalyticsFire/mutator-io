@@ -17,7 +17,7 @@ describe('MutatorIO', () => {
   } as InputStream<any>
   const mockOutputStream = {
     create: () => msg => Observable.of(msg + 'output add')
-  } as OutputStream
+  } as OutputStream<String>
 
   const MutatorIOMock = proxyquire('../src/mutator-io', {
     './logger': logger
@@ -54,7 +54,7 @@ describe('MutatorIO', () => {
     const transformStream = msg => msg + ' transform add '
     const sub = mutatorIO.transform(
       'custom-pipe1',
-      transformStream as TransformStream
+      transformStream as TransformStream<String>
     )
 
     mutatorIO.start()
@@ -77,7 +77,7 @@ describe('MutatorIO', () => {
       const transformStream = msg => msg + ' transform add '
       const sub = mutatorIO.transform(
         'custom-pipe1',
-        transformStream as TransformStream
+        transformStream as TransformStream<String>
       )
       assert(sub.id.length === 36)
     })
@@ -86,7 +86,7 @@ describe('MutatorIO', () => {
       const transformStream = msg => msg + ' transform add '
       const sub = mutatorIO.transform(
         'custom-pipe1',
-        transformStream as TransformStream
+        transformStream as TransformStream<String>
       )
 
       mutatorIO.start()
