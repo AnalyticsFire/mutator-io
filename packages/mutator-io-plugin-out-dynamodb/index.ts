@@ -11,8 +11,13 @@ declare global {
 class DynamoDB implements OutputStream<DynamoDB.Message> {
   client: AwsDynamoDB.DocumentClient
 
-  constructor(config: DynamoDB.Config = {}) {
-    this.client = new AwsDynamoDB.DocumentClient(config)
+  static defaultConfig: DynamoDB.Config = {
+    IGNORE_ERROR_CODES: []
+  }
+
+  constructor(public config: DynamoDB.Config = {}) {
+    this.config = { ...DynamoDB.defaultConfig, ...config }
+    this.client = new AwsDynamoDB.DocumentClient(this.config)
   }
 
   create() {
@@ -32,14 +37,21 @@ class DynamoDB implements OutputStream<DynamoDB.Message> {
               )
             }
 
-            const method = this.client[msg.operation]
+            let method = this.client[msg.operation]
             method.call(this.client, msg.params || {}, (error, data) => {
-              if (error) {
+              if (
+                error &&
+                (this.config.IGNORE_ERROR_CODES || []).indexOf(error.code) < 0
+              ) {
                 return observer.error(new Error(error))
               }
               observer.next(msg)
               observer.complete()
             })
+
+            return () => {
+              method = null
+            }
           })
         )
 
@@ -96,7 +108,9 @@ namespace DynamoDB {
 
   export interface Config
     extends AwsDynamoDB.Types.DocumentClient.DocumentClientOptions,
-      AwsDynamoDB.Types.ClientConfiguration {}
+      AwsDynamoDB.Types.ClientConfiguration {
+    IGNORE_ERROR_CODES?: Array<String>
+  }
 }
 
 export = DynamoDB

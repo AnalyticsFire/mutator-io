@@ -24,6 +24,20 @@
 
 
 ## Properties
+<a id="ignore_error_codes"></a>
+
+### «Optional» IGNORE_ERROR_CODES
+
+**●  IGNORE_ERROR_CODES**:  *`Array`.<`String`>* 
+
+*Defined in [index.ts:112](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L112)*
+
+
+
+
+
+___
+
 <a id="convertemptyvalues"></a>
 
 ### «Optional» convertEmptyValues

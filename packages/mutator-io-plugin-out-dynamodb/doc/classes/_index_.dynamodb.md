@@ -6,7 +6,7 @@
 
 ## Implements
 
-* `OutputStream`
+* `OutputStream`.<[Message](../interfaces/_index_.dynamodb.message.md)>
 
 ## Index
 
@@ -30,11 +30,17 @@
 ### Properties
 
 * [client](_index_.dynamodb.md#client)
+* [config](_index_.dynamodb.md#config-1)
 
 
 ### Methods
 
 * [create](_index_.dynamodb.md#create)
+
+
+### Object literals
+
+* [defaultConfig](_index_.dynamodb.md#defaultconfig)
 
 
 
@@ -46,7 +52,7 @@
 ### ⊕ **new DynamoDB**(config?: *[Config](../interfaces/_index_.dynamodb.config.md)*): [DynamoDB](_index_.dynamodb.md)
 
 
-*Defined in [index.ts:12](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L12)*
+*Defined in [index.ts:16](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L16)*
 
 
 
@@ -80,6 +86,20 @@
 
 ___
 
+<a id="config-1"></a>
+
+###  config
+
+**●  config**:  *[Config](../interfaces/_index_.dynamodb.config.md)* 
+
+*Defined in [index.ts:18](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L18)*
+
+
+
+
+
+___
+
 
 ## Methods
 <a id="create"></a>
@@ -90,13 +110,33 @@ ___
 
 
 
-*Defined in [index.ts:18](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L18)*
+*Defined in [index.ts:23](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L23)*
 
 
 
 
 
 **Returns:** `(Anonymous function)`
+
+
+
+
+
+___
+
+
+<a id="defaultconfig"></a>
+
+## Object literal: defaultConfig
+
+
+<a id="defaultconfig.ignore_error_codes"></a>
+
+###  IGNORE_ERROR_CODES
+
+**●  IGNORE_ERROR_CODES**:  *`undefined`[]*  =  []
+
+*Defined in [index.ts:15](https://github.com/AnalyticsFire/mutator-io/blob/master/packages/mutator-io-plugin-out-dynamodb/index.ts#L15)*
 
 
 
