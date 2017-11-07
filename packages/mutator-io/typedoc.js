@@ -1,12 +1,12 @@
 module.exports = {
-  mode: "modules",
-  module: "umd",
+  mode: 'modules',
+  module: 'umd',
   ignoreCompilerErrors: true,
-  theme: "markdown",
-  gitRevision: "master",
-  readme: "none",
+  theme: 'markdown',
+  gitRevision: 'master',
+  readme: 'none',
   includeDeclarations: true,
-  externalPattern: "node_modules",
+  externalPattern: 'node_modules',
   excludeExternals: true,
   excludePrivate: true
 }

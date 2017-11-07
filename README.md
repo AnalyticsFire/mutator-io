@@ -20,8 +20,8 @@ The concept of a "pipe" in Mutator I/O is simply an [input stream](doc/input-str
 ```typescript
 interface Pipe {
   name: string
-  in: InputStream
-  out: OutputStream
+  in: InputStream<any>
+  out: OutputStream<any>
 }
 ```
 
@@ -58,7 +58,7 @@ class MutatorIO {
   // Used internally by subscription to remove a trasnformer
   removeTransformer(pipeName: string, index: number): boolean
   // Main method used to add a transformation to an existing pipe
-  transform(pipeName: string, transform: TransformStream): Subscription
+  transform(pipeName: string, transform: TransformStream<any>): Subscription
   // Subscribes to the streams and start listening to inputStreams
   start(): void
 }
