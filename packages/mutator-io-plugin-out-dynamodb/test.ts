@@ -5,7 +5,7 @@ import * as sinon from 'sinon'
 import * as DynamoDB from './'
 
 describe('Output - DynamoDB', () => {
-  let outStreamInput
+  let DynamoDBMock
   let putSpy
   let deleteSpy
   let updateSpy
@@ -33,11 +33,9 @@ describe('Output - DynamoDB', () => {
       DocumentClient: DocumentClientMock
     }
 
-    const DynamoDBMock = proxyquire('.', {
+    DynamoDBMock = proxyquire('.', {
       'aws-sdk/clients/dynamodb': AwsDynamoDBMock
     })
-
-    outStreamInput = new DynamoDBMock().create()
   })
 
   describe('PUT operation', () => {
@@ -51,6 +49,7 @@ describe('Output - DynamoDB', () => {
     } as DynamoDB.Message
 
     it('performs a put call on aws if we pass a PUT Message', done => {
+      const outStreamInput = new DynamoDBMock().create()
       outStreamInput(examplePutObj).subscribe(
         ...global.baseSubscriber(examplePutObj, done)
       )
@@ -67,6 +66,7 @@ describe('Output - DynamoDB', () => {
 
     describe('Error handling', () => {
       it('outputs an error if the aws call failed', done => {
+        const outStreamInput = new DynamoDBMock().create()
         const error = new Error('put error message')
 
         outStreamInput(examplePutObj).subscribe(
@@ -87,6 +87,7 @@ describe('Output - DynamoDB', () => {
         callback(error, {})
       })
       it('retries N times if we add "retry" parameter in the message', done => {
+        const outStreamInput = new DynamoDBMock().create()
         const error = new Error('put error message')
         const inputOutputMsg = {
           ...examplePutObj,
@@ -118,6 +119,7 @@ describe('Output - DynamoDB', () => {
         scheduler.flush()
       })
       it('retries N times if we add "retry" parameter in the message w/ "retryWhen" backpressure times', done => {
+        const outStreamInput = new DynamoDBMock().create()
         const error = new Error('put error message')
         const retryDelay = msg => Rx.Observable.of(100, 300)
         const inputOutputMsg = {
@@ -146,6 +148,7 @@ describe('Output - DynamoDB', () => {
         scheduler.flush()
       })
       it('Fires an error if after N delayed retries it still fails', done => {
+        const outStreamInput = new DynamoDBMock().create()
         const error = new Error('put error message')
         const retryDelaySpy = global.sandbox.spy()
         const retryDelay = msg => {
@@ -184,6 +187,64 @@ describe('Output - DynamoDB', () => {
         )
         scheduler.flush()
       })
+      it('Ignores errors if the error.code is specified in the config IGNORE_ERRORS param', done => {
+        const outStreamInput = new DynamoDBMock({
+          IGNORE_ERRORS: [
+            { code: 'ConditionalCheckFailedException' },
+            {
+              code: 'ResourceNotFoundException',
+              message: 'Test specific message ignored'
+            }
+          ]
+        } as DynamoDB.Config).create()
+
+        const expectedPutObjs = [examplePutObj, examplePutObj]
+        const expectedException = {
+          code: 'ResourceNotFoundException',
+          message: 'Error Message'
+        }
+
+        Rx.Observable
+          .merge(
+            outStreamInput(examplePutObj),
+            outStreamInput(examplePutObj),
+            outStreamInput(examplePutObj)
+          )
+          .subscribe(
+            msg => {
+              assert.deepEqual(msg, expectedPutObjs.shift())
+            },
+            e => {
+              assert.deepEqual(e, new Error(expectedException.toString()))
+              if (!expectedPutObjs.length) {
+                done()
+              } else {
+                done(new Error('Not all values expected were emitted'))
+              }
+            }
+          )
+
+        assert(putSpy.called)
+        assert(putSpy.getCalls().length === 3)
+        let callback
+        callback = putSpy.getCall(0).args[1]
+        callback(
+          {
+            code: 'ConditionalCheckFailedException'
+          },
+          {}
+        )
+        callback = putSpy.getCall(1).args[1]
+        callback(
+          {
+            code: 'ResourceNotFoundException',
+            message: 'Test specific message ignored'
+          },
+          {}
+        )
+        callback = putSpy.getCall(2).args[1]
+        callback(expectedException, {})
+      })
     })
   })
 
@@ -198,6 +259,7 @@ describe('Output - DynamoDB', () => {
     } as DynamoDB.Message
 
     it('performs a delete call on aws if we pass a DELETE Message', done => {
+      const outStreamInput = new DynamoDBMock().create()
       outStreamInput(exampleDeleteObj).subscribe(
         ...global.baseSubscriber(exampleDeleteObj, done)
       )
@@ -214,6 +276,7 @@ describe('Output - DynamoDB', () => {
 
     describe('Error handling', () => {
       it('outputs an error if the aws call failed', done => {
+        const outStreamInput = new DynamoDBMock().create()
         const error = new Error('put error message')
 
         outStreamInput(exampleDeleteObj).subscribe(
@@ -247,6 +310,7 @@ describe('Output - DynamoDB', () => {
     } as DynamoDB.Message
 
     it('performs an update call on aws if we pass an UPDATE Message', done => {
+      const outStreamInput = new DynamoDBMock().create()
       outStreamInput(exampleUpdateObj).subscribe(
         ...global.baseSubscriber(exampleUpdateObj, done)
       )
@@ -263,6 +327,7 @@ describe('Output - DynamoDB', () => {
 
     describe('Error handling', () => {
       it('outputs an error if the aws call failed', done => {
+        const outStreamInput = new DynamoDBMock().create()
         const error = new Error('put error message')
 
         outStreamInput(exampleUpdateObj).subscribe(

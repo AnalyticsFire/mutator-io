@@ -11,8 +11,13 @@ declare global {
 class DynamoDB implements OutputStream<DynamoDB.Message> {
   client: AwsDynamoDB.DocumentClient
 
-  constructor(config: DynamoDB.Config = {}) {
-    this.client = new AwsDynamoDB.DocumentClient(config)
+  static defaultConfig: DynamoDB.Config = {
+    IGNORE_ERRORS: []
+  }
+
+  constructor(public config: DynamoDB.Config = {}) {
+    this.config = { ...DynamoDB.defaultConfig, ...config }
+    this.client = new AwsDynamoDB.DocumentClient(this.config)
   }
 
   create() {
@@ -32,14 +37,26 @@ class DynamoDB implements OutputStream<DynamoDB.Message> {
               )
             }
 
-            const method = this.client[msg.operation]
+            let method = this.client[msg.operation]
             method.call(this.client, msg.params || {}, (error, data) => {
               if (error) {
-                return observer.error(new Error(error))
+                const isIgnored = (this.config.IGNORE_ERRORS || []).find(
+                  (err: DynamoDB.IgnorableError) =>
+                    error.code === err.code &&
+                    (!error.message || error.message === err.message)
+                )
+
+                if (!isIgnored) {
+                  return observer.error(new Error(error))
+                }
               }
               observer.next(msg)
               observer.complete()
             })
+
+            return () => {
+              method = null
+            }
           })
         )
 
@@ -94,9 +111,16 @@ namespace DynamoDB {
     retryDelay?: RetryDelay
   }
 
+  export interface IgnorableError {
+    code: String
+    message?: String
+  }
+
   export interface Config
     extends AwsDynamoDB.Types.DocumentClient.DocumentClientOptions,
-      AwsDynamoDB.Types.ClientConfiguration {}
+      AwsDynamoDB.Types.ClientConfiguration {
+    IGNORE_ERRORS?: Array<IgnorableError>
+  }
 }
 
 export = DynamoDB
