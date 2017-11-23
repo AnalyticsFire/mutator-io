@@ -1,4 +1,5 @@
 import * as c from 'colors/safe'
+import * as winston from 'winston'
 import { Observable, ReplaySubject } from 'rxjs'
 import { TransformStream } from './transform-stream'
 import { InputStream } from './input-stream'
@@ -17,8 +18,18 @@ class MutatorIO {
   public transformers: MutatorIO.Transformers = {}
   public subscriptions: MutatorIO.Subscriptions = {}
 
+  static LogLevels = {
+    NONE: -1,
+    ERROR: 0,
+    WARN: 1,
+    INFO: 2,
+    VERBOSE: 3,
+    DEBUG: 4,
+    SILLY: 5
+  }
+
   static defaultConfig: MutatorIO.Config = {
-    LOG_LEVEL: 'INFO',
+    LOG_LEVEL: MutatorIO.LogLevels.INFO,
     COLORS: true
   }
 
@@ -27,7 +38,10 @@ class MutatorIO {
     public config: MutatorIO.Config = {}
   ) {
     this.config = { ...MutatorIO.defaultConfig, ...config }
-    logger.level = this.config.LOG_LEVEL.toString().toLowerCase()
+    logger.level = this.config.LOG_LEVEL
+    if (logger.level === MutatorIO.LogLevels.NONE) {
+      logger.remove('mutator-io-logger')
+    }
     if (!this.config.COLORS) {
       c.enabled = false
       logger.transports['mutator-io-logger'].colorize = false
@@ -128,7 +142,7 @@ namespace MutatorIO {
 
   export interface Config {
     COLORS?: boolean
-    LOG_LEVEL?: 'NONE' | 'INFO' | 'DEBUG'
+    LOG_LEVEL?: Number
   }
 }
 
