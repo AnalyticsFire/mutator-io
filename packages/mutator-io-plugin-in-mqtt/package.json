@@ -40,12 +40,16 @@
     "sinon": "^2.3.8",
     "typedoc": "^0.9.0",
     "typedoc-plugin-markdown": "^1.0.11",
-    "typescript": "^2.5.3"
+    "typescript": "^2.5.3",
+    "mutator-io": "^0.2.3",
+    "rxjs": "5.5.2"
   },
   "dependencies": {
-    "mqtt": "^2.9.1",
+    "mqtt": "^2.9.1"
+  },
+  "peerDependencies": {
     "mutator-io": "^0.2.3",
-    "rxjs": "5.4.2"
+    "rxjs": "5.5.2"
   },
   "directories": {
     "doc": "doc"

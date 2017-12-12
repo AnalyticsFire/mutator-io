@@ -84,7 +84,7 @@ describe('Output - DynamoDB', () => {
         const callback = putSpy.getCall(0).args[1]
         assert(callback instanceof Function)
 
-        callback(error, {})
+        callback(error.message, {})
       })
       it('retries N times if we add "retry" parameter in the message', done => {
         const outStreamInput = new DynamoDBMock().create()
@@ -294,7 +294,7 @@ describe('Output - DynamoDB', () => {
         const callback = deleteSpy.getCall(0).args[1]
         assert(callback instanceof Function)
 
-        callback(error, {})
+        callback(error.message, {})
       })
     })
   })
@@ -345,7 +345,7 @@ describe('Output - DynamoDB', () => {
         const callback = updateSpy.getCall(0).args[1]
         assert(callback instanceof Function)
 
-        callback(error, {})
+        callback(error.message, {})
       })
     })
   })
