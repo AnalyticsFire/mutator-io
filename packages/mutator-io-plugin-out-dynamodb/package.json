@@ -1,6 +1,6 @@
 {
   "name": "mutator-io-plugin-out-dynamodb",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Output stream plugin for mutator-io to interface with DynamoDB",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -35,20 +35,20 @@
     "espower-typescript": "^8.0.2",
     "iron-node": "^3.0.19",
     "mocha": "^3.4.2",
+    "mutator-io": "^0.2.4",
     "power-assert": "^1.4.4",
     "proxyquire": "^1.8.0",
+    "rxjs": "5.5.2",
     "sinon": "^2.3.8",
     "typedoc": "^0.9.0",
     "typedoc-plugin-markdown": "^1.0.11",
-    "typescript": "^2.5.3",
-    "mutator-io": "^0.2.3",
-    "rxjs": "5.5.2"
+    "typescript": "^2.5.3"
   },
   "dependencies": {
     "aws-sdk": "^2.108.0"
   },
   "peerDependencies": {
-    "mutator-io": "^0.2.3",
+    "mutator-io": "^0.2.4",
     "rxjs": "5.5.2"
   },
   "directories": {
