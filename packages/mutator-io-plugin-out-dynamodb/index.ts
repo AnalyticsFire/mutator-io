@@ -43,7 +43,7 @@ class DynamoDB implements OutputStream<DynamoDB.Message> {
                 const isIgnored = (this.config.IGNORE_ERRORS || []).find(
                   (err: DynamoDB.IgnorableError) =>
                     error.code === err.code &&
-                    (!error.message || error.message === err.message)
+                    (!err.message || error.message === err.message)
                 )
 
                 if (!isIgnored) {
