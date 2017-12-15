@@ -230,7 +230,8 @@ describe('Output - DynamoDB', () => {
         callback = putSpy.getCall(0).args[1]
         callback(
           {
-            code: 'ConditionalCheckFailedException'
+            code: 'ConditionalCheckFailedException',
+            message: 'Test specific message ignored'
           },
           {}
         )
