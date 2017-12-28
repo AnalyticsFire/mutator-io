@@ -2,7 +2,6 @@ import * as assert from 'assert'
 import * as proxyquire from 'proxyquire'
 import * as sinon from 'sinon'
 import { Observable, Subject } from 'rxjs'
-import logger from '../src/logger'
 import {
   MutatorIO,
   InputStream,
@@ -19,29 +18,29 @@ describe('MutatorIO', () => {
     create: () => msg => Observable.of(msg + 'output add')
   } as OutputStream<String>
 
-  const MutatorIOMock = proxyquire('../src/mutator-io', {
-    './logger': logger
-  })
-
   let mockInput
-  let loggerSpy
+  let loggerStub
   let mutatorIO
 
   beforeEach(() => {
     mockInput = new Subject()
-    loggerSpy = global.sandbox.spy(logger, 'info')
-    mutatorIO = new MutatorIOMock(
-      [
-        {
-          name: 'custom-pipe1',
-          in: mockInputStream,
-          out: mockOutputStream
-        }
-      ] as Array<MutatorIO.Pipe>,
+    loggerStub = global.sandbox.spy()
+
+    const MutatorIOMock = proxyquire('../src/mutator-io', {
+      pino: () => ({
+        debug: () => {},
+        info: loggerStub,
+        error: loggerStub
+      })
+    })
+
+    mutatorIO = new MutatorIOMock([
       {
-        LOG_LEVEL: 'NONE'
+        name: 'custom-pipe1',
+        in: mockInputStream,
+        out: mockOutputStream
       }
-    )
+    ] as Array<MutatorIO.Pipe>)
   })
 
   it('adds a transformer to the list and returns a subscription item', () => {
@@ -60,16 +59,17 @@ describe('MutatorIO', () => {
     mutatorIO.start()
     mockInput.next('input add')
 
-    assert(loggerSpy.getCalls().length === 2)
-    assert(loggerSpy.lastCall.args[0] === 'input add transform add output add')
+    assert(loggerStub.getCalls().length === 2)
+    console.log(loggerStub.getCalls())
+    assert(loggerStub.lastCall.args[0] === 'input add transform add output add')
   })
 
   it('composes a stream with just input + output (no transform)', () => {
     mutatorIO.start()
     mockInput.next('input add ')
 
-    assert(loggerSpy.getCalls().length === 2)
-    assert(loggerSpy.lastCall.args[0] === 'input add output add')
+    assert(loggerStub.getCalls().length === 2)
+    assert(loggerStub.lastCall.args[0] === 'input add output add')
   })
 
   describe('Subscription', () => {
@@ -95,7 +95,7 @@ describe('MutatorIO', () => {
       sub.unsubscribe()
       mockInput.next('another input add')
 
-      assert(loggerSpy.getCalls().length === 3)
+      assert(loggerStub.getCalls().length === 3)
     })
   })
 })
