@@ -28,6 +28,12 @@ class MutatorIO {
     SILLY: 5
   }
 
+  private static nameForLogLevel(level): string {
+    return Object.keys(MutatorIO.LogLevels)
+      .find(key => MutatorIO.LogLevels[key] === level)
+      .toLowerCase()
+  }
+
   static defaultConfig: MutatorIO.Config = {
     LOG_LEVEL: MutatorIO.LogLevels.INFO,
     COLORS: true
@@ -38,8 +44,8 @@ class MutatorIO {
     public config: MutatorIO.Config = {}
   ) {
     this.config = { ...MutatorIO.defaultConfig, ...config }
-    logger.level = this.config.LOG_LEVEL
-    if (logger.level === MutatorIO.LogLevels.NONE) {
+    logger.level = MutatorIO.nameForLogLevel(this.config.LOG_LEVEL)
+    if (this.config.LOG_LEVEL === MutatorIO.LogLevels.NONE) {
       logger.remove('mutator-io-logger')
     }
     if (!this.config.COLORS) {
