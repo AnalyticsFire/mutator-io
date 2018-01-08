@@ -19,18 +19,18 @@ describe('MutatorIO', () => {
   } as OutputStream<String>
 
   let mockInput
-  let loggerStub
+  let loggerSpy
   let mutatorIO
 
   beforeEach(() => {
     mockInput = new Subject()
-    loggerStub = global.sandbox.spy()
+    loggerSpy = global.sandbox.spy()
 
     const MutatorIOMock = proxyquire('../src/mutator-io', {
       pino: () => ({
         debug: () => {},
-        info: loggerStub,
-        error: loggerStub
+        info: loggerSpy,
+        error: loggerSpy
       })
     })
 
@@ -59,17 +59,17 @@ describe('MutatorIO', () => {
     mutatorIO.start()
     mockInput.next('input add')
 
-    assert(loggerStub.getCalls().length === 2)
-    console.log(loggerStub.getCalls())
-    assert(loggerStub.lastCall.args[0] === 'input add transform add output add')
+    assert(loggerSpy.getCalls().length === 2)
+    console.log(loggerSpy.getCalls())
+    assert(loggerSpy.lastCall.args[0] === 'input add transform add output add')
   })
 
   it('composes a stream with just input + output (no transform)', () => {
     mutatorIO.start()
     mockInput.next('input add ')
 
-    assert(loggerStub.getCalls().length === 2)
-    assert(loggerStub.lastCall.args[0] === 'input add output add')
+    assert(loggerSpy.getCalls().length === 2)
+    assert(loggerSpy.lastCall.args[0] === 'input add output add')
   })
 
   describe('Subscription', () => {
@@ -95,7 +95,7 @@ describe('MutatorIO', () => {
       sub.unsubscribe()
       mockInput.next('another input add')
 
-      assert(loggerStub.getCalls().length === 3)
+      assert(loggerSpy.getCalls().length === 3)
     })
   })
 })
