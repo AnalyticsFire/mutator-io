@@ -60,7 +60,6 @@ describe('MutatorIO', () => {
     mockInput.next('input add')
 
     assert(loggerSpy.getCalls().length === 2)
-    console.log(loggerSpy.getCalls())
     assert(loggerSpy.lastCall.args[0] === 'input add transform add output add')
   })
 
