@@ -1,8 +1,8 @@
+import * as pino from 'pino'
 import * as c from 'colors/safe'
 import { Observable, Subscription as RxjsSubscription } from 'rxjs'
 import * as MutatorIO from './mutator-io'
 import * as uuidv1 from 'uuid/v1'
-import logger from './logger'
 
 export class Subscription {
   id: string
@@ -12,7 +12,8 @@ export class Subscription {
   constructor(
     private mutatorInstance: MutatorIO,
     private pipeName: string,
-    private transformIndex: number
+    private transformIndex: number,
+    private logger: pino.Logger
   ) {
     this.id = uuidv1()
   }
@@ -20,7 +21,7 @@ export class Subscription {
   unsubscribe(): void {
     this.mutatorInstance.removeTransformer(this.pipeName, this.transformIndex)
     this.disposable.unsubscribe()
-    logger.info(
+    this.logger.info(
       `${c.rainbow('•••')} ${this
         .pipeName} pipe closed (unsubscribed) ${c.rainbow('•••')}`
     )

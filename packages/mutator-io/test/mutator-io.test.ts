@@ -2,7 +2,6 @@ import * as assert from 'assert'
 import * as proxyquire from 'proxyquire'
 import * as sinon from 'sinon'
 import { Observable, Subject } from 'rxjs'
-import logger from '../src/logger'
 import {
   MutatorIO,
   InputStream,
@@ -19,29 +18,29 @@ describe('MutatorIO', () => {
     create: () => msg => Observable.of(msg + 'output add')
   } as OutputStream<String>
 
-  const MutatorIOMock = proxyquire('../src/mutator-io', {
-    './logger': logger
-  })
-
   let mockInput
   let loggerSpy
   let mutatorIO
 
   beforeEach(() => {
     mockInput = new Subject()
-    loggerSpy = global.sandbox.spy(logger, 'info')
-    mutatorIO = new MutatorIOMock(
-      [
-        {
-          name: 'custom-pipe1',
-          in: mockInputStream,
-          out: mockOutputStream
-        }
-      ] as Array<MutatorIO.Pipe>,
+    loggerSpy = global.sandbox.spy()
+
+    const MutatorIOMock = proxyquire('../src/mutator-io', {
+      pino: () => ({
+        debug: () => {},
+        info: loggerSpy,
+        error: loggerSpy
+      })
+    })
+
+    mutatorIO = new MutatorIOMock([
       {
-        LOG_LEVEL: 'NONE'
+        name: 'custom-pipe1',
+        in: mockInputStream,
+        out: mockOutputStream
       }
-    )
+    ] as Array<MutatorIO.Pipe>)
   })
 
   it('adds a transformer to the list and returns a subscription item', () => {

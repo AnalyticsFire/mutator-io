@@ -1,12 +1,11 @@
 import * as c from 'colors/safe'
-import * as winston from 'winston'
+import * as pino from 'pino'
 import { Observable, ReplaySubject } from 'rxjs'
 import { TransformStream } from './transform-stream'
 import { InputStream } from './input-stream'
 import { OutputStream } from './output-stream'
 import { Subscription } from './subscription'
 import * as shared from './shared'
-import logger from './logger'
 
 interface pipeResult extends Array<any> {
   0: string
@@ -17,15 +16,15 @@ interface pipeResult extends Array<any> {
 class MutatorIO {
   public transformers: MutatorIO.Transformers = {}
   public subscriptions: MutatorIO.Subscriptions = {}
+  private logger: pino.Logger
 
   static LogLevels = {
-    NONE: -1,
-    ERROR: 0,
-    WARN: 1,
-    INFO: 2,
-    VERBOSE: 3,
-    DEBUG: 4,
-    SILLY: 5
+    NONE: 'silent',
+    ERROR: 'error',
+    WARN: 'warn',
+    INFO: 'info',
+    VERBOSE: 'trace',
+    DEBUG: 'debug'
   }
 
   static defaultConfig: MutatorIO.Config = {
@@ -38,14 +37,18 @@ class MutatorIO {
     public config: MutatorIO.Config = {}
   ) {
     this.config = { ...MutatorIO.defaultConfig, ...config }
-    logger.level = this.config.LOG_LEVEL
-    if (logger.level === MutatorIO.LogLevels.NONE) {
-      logger.remove('mutator-io-logger')
-    }
+
+    const loggerOpts = {
+      level: this.config.LOG_LEVEL,
+      extreme: this.config.EXTREME,
+      prettyPrint: this.config.COLORS
+    } as pino.LoggerOptions
+
     if (!this.config.COLORS) {
       c.enabled = false
-      logger.transports['mutator-io-logger'].colorize = false
     }
+
+    this.logger = pino(loggerOpts)
   }
 
   removeTransformer(pipeName: string, index: number): boolean {
@@ -60,7 +63,13 @@ class MutatorIO {
     this.transformers[pipeName] = this.transformers[pipeName] || []
     const lastIndex = this.transformers[pipeName].push(transform) - 1
 
-    const subscription = new Subscription(this, pipeName, lastIndex)
+    const subscription = new Subscription(
+      this,
+      pipeName,
+      lastIndex,
+      this.logger
+    )
+
     transform.subscriptionId = subscription.id
     this.subscriptions[subscription.id] = subscription
     return subscription
@@ -77,12 +86,12 @@ class MutatorIO {
       pipe.name,
       shared
         .wrapToObservable(inStream)
-        .do(msg => logger.debug(c.yellow('pre-transformation'), msg))
+        .do(msg => this.logger.debug(msg, c.yellow('pre-transformation')))
         .flatMap(msg => shared.wrapToObservable(transformer.call(this, msg)))
-        .do(msg => logger.debug(c.yellow('post-transformation'), msg))
+        .do(msg => this.logger.debug(msg, c.yellow('post-transformation')))
         .flatMap(msg =>
           shared.wrapToObservable(outStream(msg)).catch(err => {
-            logger.error(err)
+            this.logger.error(err)
             return Observable.empty()
           })
         ),
@@ -91,15 +100,15 @@ class MutatorIO {
   }
 
   private subscribeToStream([pipeName, stream, subscription]: pipeResult) {
-    logger.info(
+    this.logger.info(
       `${c.rainbow('•••')} Listening on pipe ${pipeName} ${c.rainbow('•••')}`
     )
     subscription.stream = stream
     subscription.disposable = stream.subscribe(
-      msg => logger.info(msg),
-      err => logger.error(err),
+      msg => this.logger.info(msg),
+      err => this.logger.error(err),
       () =>
-        logger.info(
+        this.logger.info(
           `${c.rainbow('•••')} ${pipeName} pipe closed ${c.rainbow('•••')}`
         )
     )
@@ -121,7 +130,7 @@ class MutatorIO {
       return acc.concat(currentPipeResult)
     }, [])
 
-    streams.forEach(this.subscribeToStream)
+    streams.forEach(this.subscribeToStream, this)
   }
 }
 
@@ -142,7 +151,8 @@ namespace MutatorIO {
 
   export interface Config {
     COLORS?: boolean
-    LOG_LEVEL?: Number
+    EXTREME?: boolean
+    LOG_LEVEL?: String
   }
 }
 
