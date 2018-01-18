@@ -12,6 +12,7 @@ interface pipeResult extends Array<any> {
   0: string
   1: Observable<any>
   2: Subscription
+  3: boolean
 }
 
 class MutatorIO {
@@ -73,31 +74,56 @@ class MutatorIO {
     const inStream = pipe.in.create()
     const outStream = pipe.out.create()
 
+    const controlled = pipe.in.controlled && pipe.in.controlled()
+
     return [
       pipe.name,
-      shared
-        .wrapToObservable(inStream)
-        .do(msg => logger.debug(c.yellow('pre-transformation'), msg))
-        .flatMap(msg => shared.wrapToObservable(transformer.call(this, msg)))
-        .do(msg => logger.debug(c.yellow('post-transformation'), msg))
-        .flatMap(msg =>
-          shared.wrapToObservable(outStream(msg)).catch(err => {
-            logger.error(err)
-            return Observable.empty()
-          })
-        ),
-      this.subscriptions[transformer.subscriptionId]
+      shared.wrapToObservable(inStream).flatMap(data => {
+        return Observable.of(controlled ? data[0] : data)
+          .do(msg => logger.debug(c.yellow('pre-transformation'), msg))
+          .flatMap(msg => shared.wrapToObservable(transformer.call(this, msg)))
+          .do(msg => logger.debug(c.yellow('post-transformation'), msg))
+          .flatMap(msg =>
+            shared
+              .wrapToObservable(outStream(msg))
+              .catch(err => {
+                logger.error(err)
+                return Observable.empty()
+              })
+              .map(out => {
+                return controlled ? [out, data[1]] : out
+              })
+          )
+      }),
+      this.subscriptions[transformer.subscriptionId],
+      controlled
     ]
   }
 
-  private subscribeToStream([pipeName, stream, subscription]: pipeResult) {
+  private subscribeToStream(
+    [pipeName, stream, subscription, controlled]: pipeResult
+  ) {
     logger.info(
       `${c.rainbow('•••')} Listening on pipe ${pipeName} ${c.rainbow('•••')}`
     )
     subscription.stream = stream
     subscription.disposable = stream.subscribe(
-      msg => logger.info(msg),
-      err => logger.error(err),
+      data => {
+        if (controlled) {
+          logger.info(data[0])
+          data[1]()
+        } else {
+          logger.info(data)
+        }
+      },
+      data => {
+        if (controlled) {
+          logger.error(data[0])
+          data[1]()
+        } else {
+          logger.error(data)
+        }
+      },
       () =>
         logger.info(
           `${c.rainbow('•••')} ${pipeName} pipe closed ${c.rainbow('•••')}`
